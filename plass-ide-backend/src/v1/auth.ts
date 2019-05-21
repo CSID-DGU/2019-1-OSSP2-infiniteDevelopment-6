@@ -1,10 +1,11 @@
 import * as express from "express";
 import * as passport from "passport";
 import {Strategy} from "passport-jwt";
+import JWT_SECRET_KEY from "../../config/jwt_secret_key";
 import {getTokenFromRequestCookie} from "../Util";
 
 const passportOption = {
-    secretOrKey: process.env.JWT_SECRET_KEY,
+    secretOrKey: JWT_SECRET_KEY,
     jwtFromRequest: getTokenFromRequestCookie,
 };
 
