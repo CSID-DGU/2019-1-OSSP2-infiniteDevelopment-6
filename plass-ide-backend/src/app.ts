@@ -3,12 +3,7 @@ import * as http from "http";
 import {auth} from "./auth";
 import {router} from "./v1/router";
 
-if (process.env.PORT === undefined) {
-    console.error("PORT is not defined.");
-    process.exit();
-}
-
-const port = parseInt(process.env.PORT, 10);
+const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
 const app = express();
 
