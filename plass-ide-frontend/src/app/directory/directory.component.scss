@@ -1,0 +1,25 @@
+section{
+  display: flex;
+  flex-direction: column;
+  .tooltip-wrapper {
+    text-align: right;
+  }
+  .directory-wrapper{
+    ul {
+      li {
+        display: inline-block;
+        cursor: pointer;
+        .directory-img {
+          display: inline-block;
+          width: 150px;
+          height: 150px;
+          margin: 1rem 1rem 0.25rem 1rem;
+          background: pink;
+        }
+        p {
+          text-align: center;
+        }
+      }
+    }
+  }
+}
