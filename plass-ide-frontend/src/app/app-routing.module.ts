@@ -6,8 +6,10 @@ import {
 import { CanActivateGuard } from './can-activate-guard';
 import { ConsoleComponent } from './console/console.component';
 import { LoginComponent } from './login/login.component';
+import { MainComponent } from './main/main.component';
 
 const routes: Routes = [
+    { path: '', component: MainComponent },
     { path: 'login', component: LoginComponent },
     // loadChildren: './login/login.module#LoginModule' },
     { path: 'console', component: ConsoleComponent, canActivate: [CanActivateGuard] },

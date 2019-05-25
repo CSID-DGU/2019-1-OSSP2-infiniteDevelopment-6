@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import { CanActivateGuard } from './can-activate-guard';
 import { ConsoleModule } from './console/console.module';
 import { LoginModule } from './login/login.module';
+import { MainModule } from './main/main.module';
 
 @NgModule({
     declarations: [
@@ -25,6 +26,7 @@ import { LoginModule } from './login/login.module';
         HttpClientModule,
         LoginModule,
         ConsoleModule,
+        MainModule
     ],
     providers: [
         CanActivateGuard,
