@@ -35,27 +35,6 @@ export class ConsoleComponent implements OnInit {
             );
     }
 
-    public onProblemClick(event) {
-        if (this.javaProblems[event.index] === undefined) {
-            this.dataService.getJavaProblem(this.javaProblemLabels[event.index])
-                .subscribe(
-                    value => {
-                        this.javaProblems[event.index] = value;
-                    },
-                );
-
-        }
-    }
-
-    public onAnswerButtonClick(index: number) {
-        if (this.javaProblems[index].type === 'A') {
-            const sampleSource = 'class Main {\n    public static void main(String[] args) {\n        // 소스 코드 입력\n    }\n}\n';
-            this.answer = `/*\n number: ${this.javaProblems[index].number}\n time: ${Math.floor(Date.now() / 1000)}\n */\n${sampleSource}`;
-        } else {
-            this.answer = this.javaProblems[index].answer;
-        }
-    }
-
     public runSource() {
         this.dataService.runJavaSource(this.answer)
             .subscribe(

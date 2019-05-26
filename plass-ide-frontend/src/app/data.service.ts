@@ -64,31 +64,6 @@ export class DataService {
             );
     }
 
-    public getJavaProblems(): Observable<Array<string>> {
-        return this.http.get(`${this.apiUrl}/problems/java`).pipe(
-            map((value: any) => value.problems || []),
-            catchError(error => this.handleError(error)),
-        );
-    }
-
-    public getJavaProblem(problemNumber: string): Observable<ProblemContent> {
-        return this.http.get(`${this.apiUrl}/problems/java/${problemNumber}`).pipe(
-            map((value: any) => value),
-            catchError(error => this.handleError(error)),
-        );
-    }
-
-    public runJavaSource(source: string): Observable<any> {
-        const payload = {
-            source,
-        };
-
-        return this.http.post(`${this.apiUrl}/run`, payload, { headers: new HttpHeaders({ timeout: `${60 * 1000}` }) }).pipe(
-            map((value: any) => value.hash),
-            catchError(error => this.handleError(error)),
-        );
-    }
-
     public getResult(hash: string, isError: boolean, index?: number): Observable<any> {
         return this.http.get(`${this.apiUrl}/run/result/${hash}?is_error=${isError}&index=${index}`)
             .pipe(
