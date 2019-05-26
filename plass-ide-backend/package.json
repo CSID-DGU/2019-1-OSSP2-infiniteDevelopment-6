@@ -8,7 +8,8 @@
     "clean": "rimraf build",
     "lint": "tslint --project tsconfig.json",
     "start": "node build/app.js",
-    "start:dev": "npm run clean && tsc && node build/app"
+    "start:dev": "npm run clean && tsc && node build/app",
+    "start:live": "nodemon --watch '*.ts' --exec 'npm run clean && tsc && node build/app'"
   },
   "keywords": [],
   "author": "",
