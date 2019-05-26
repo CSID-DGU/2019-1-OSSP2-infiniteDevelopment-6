@@ -104,4 +104,12 @@ export class DataService {
                 catchError(error => this.handleError(error))
             );
     }
+
+    public getProblem({id}:{id: number}): Observable<Problem> {
+        return this.http.get(`${this.apiUrl}/problems/${id}`)
+            .pipe(
+                map((value: any)=> value),
+                catchError(error => this.handleError(error))
+            );
+    }
 }

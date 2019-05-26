@@ -12,6 +12,7 @@ export interface Problem {
     input?: string;
     output?: string;
     rank: number;
+    remarks?: string;
     created: string;
     category: string;
     isSolve?: boolean;
@@ -19,7 +20,6 @@ export interface Problem {
 }
 
 export interface TestCase {
-    id: number;
     input: string;
     output: string;
 }
