@@ -36,6 +36,6 @@ router.get("/run/result/:hash", authenticate, runEndPoint.result);
 
 router.get("/problems", problemEndPoint.getProblems);
 
-router.get("/problems/:label", authenticate, problemEndPoint.getProblem);
+router.get("/problems/:id", problemEndPoint.getProblem);
 
 export {router};
