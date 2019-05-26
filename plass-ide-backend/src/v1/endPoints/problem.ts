@@ -2,18 +2,22 @@ import * as express from "express";
 import * as fs from "fs";
 import * as path from "path";
 import {IProblem} from "../../types";
+import connection from "../../connection";
 
 const javaDirectory = path.join(__dirname, "../../../problems/java");
 const csharpDirectory = path.join(__dirname, "../../../problems/csharp");
 const problemDirectory = path.join(__dirname, "../../../problems/problem");
 
-const getProblems = (req: express.Request, res: express.Response) => {
-    const problems = fs.readdirSync(javaDirectory).filter(file => !file.includes("in") && !file.includes("out"));
+const getProblems = async (req: express.Request, res: express.Response) => {
+    const unit = req.query.unit || 10;
+    const page = req.query.page || 0;
+
+    const [rows] = await connection.execute("SELECT * FROM problems LIMIT ?, ?", [page * unit, unit]);
 
     res
         .status(200)
         .json({
-            problems,
+            problems: rows
         });
 };
 

@@ -34,8 +34,8 @@ router.post("/run", authenticate, runEndPoint.run);
 
 router.get("/run/result/:hash", authenticate, runEndPoint.result);
 
-router.get("/problems/java", authenticate, problemEndPoint.getProblems);
+router.get("/problems", problemEndPoint.getProblems);
 
-router.get("/problems/java/:label", authenticate, problemEndPoint.getProblem);
+router.get("/problems/:label", authenticate, problemEndPoint.getProblem);
 
 export {router};
