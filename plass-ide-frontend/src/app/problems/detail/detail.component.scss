@@ -7,44 +7,27 @@ section {
         h1 {
             font-size: 2rem;
             font-weight: 600;
+            margin-bottom: 10px;
         }
-        table {
-            margin-top: 30px;
-            width: 100%;
-            border: 1px solid #a0a0a0;
-            th, td {
-                padding: 10px 0;
-                border-right: 1px solid #a0a0a0;
+        .wrapper {
+            margin-bottom: 25px;
+            h2 {
+                font-size: 1.25rem;
+                padding-bottom: 10px;
+                border-bottom: 1px solid #a0a0a0;
+                margin-bottom: 10px;
             }
-            tr {
-                border-top: 1px solid #a0a0a0;
-            }
-            th:last-child,
-            td:last-child {
-                border-right: 0;
-            }
-            td {
-                text-align: center;
-                padding: 10px 5px;
-            }
-            td.title {
-                text-align: left;
-            }
-            tbody {
-                tr {
-                    cursor: pointer;
+        }
+        .examples-wrapper {
+            .example-wrapper {
+                display: flex;
+                justify-content: space-between;
+                .example-container {
+                    flex: 1 1 auto;
+                    .example-container textarea{
+                        width: 100%;
+                    }
                 }
-            }
-        }
-    }
-    .pagination {
-        text-align: center;
-        ul {
-            margin-top: 15px;
-            li {
-                padding: 10px;
-                border: 1px solid #a0a0a0;
-                display: inline-block;
             }
         }
     }
