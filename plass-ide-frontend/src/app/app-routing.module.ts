@@ -18,7 +18,7 @@ const routes: Routes = [
     { path: 'console', component: ConsoleComponent, canActivate: [CanActivateGuard] },
     { path: 'problems', component: ProblemsComponent},
     { path: 'problems/:id', component: DetailComponent},
-    { path: '**', redirectTo: 'console' },
+    { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
