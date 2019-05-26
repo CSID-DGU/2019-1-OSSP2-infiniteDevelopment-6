@@ -1,8 +1,10 @@
 import {
-    Component
+    Component,
+    OnInit
 } from '@angular/core';
 
 import { Router ,RouterLink } from '@angular/router';
+import { DataService } from '../data.service';
 
 @Component({
     selector: 'app-main',
@@ -10,12 +12,25 @@ import { Router ,RouterLink } from '@angular/router';
     styleUrls: ['./main.component.scss'],
 })
 
-export class MainComponent{
+export class MainComponent implements OnInit{
+    isLoggedIn: boolean = false;
+
     public constructor(
-        private router: Router
+        private router: Router,
+        private dataService: DataService
     ) {}
+    
+    public ngOnInit() {
+        this.dataService.verify().subscribe((value) => {
+            this.isLoggedIn = value;
+        });
+    }
 
     public async onClickGetStart() {
-        await this.router.navigateByUrl("login");
+        if(this.isLoggedIn) {
+            await this.router.navigateByUrl("directory");
+        } else {
+            await this.router.navigateByUrl("login");
+        }
     }
 }
