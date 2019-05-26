@@ -26,14 +26,7 @@ export class ConsoleComponent implements OnInit {
         private dataService: DataService,
     ) {}
 
-    public ngOnInit() {
-        this.dataService.getJavaProblems()
-            .subscribe(
-                value => {
-                    this.javaProblemLabels = value;
-                },
-            );
-    }
+    public ngOnInit() {}
 
     public runSource() {
         this.dataService.runJavaSource(this.answer)
