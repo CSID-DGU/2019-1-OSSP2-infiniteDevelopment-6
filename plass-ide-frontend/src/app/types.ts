@@ -6,10 +6,22 @@ export interface ProblemContent {
 }
 
 export interface Problem {
-    number: string;
-    type: string;
-    question: string;
-    answer: string;
+    id: number;
+    name: string;
+    content?: string;
+    input?: string;
+    output?: string;
+    rank: number;
+    created: string;
+    category: string;
+    isSolve?: boolean;
+    testCases?: Array<TestCase>;
+}
+
+export interface TestCase {
+    id: number;
+    input: string;
+    output: string;
 }
 
 export interface AccordionEvent {

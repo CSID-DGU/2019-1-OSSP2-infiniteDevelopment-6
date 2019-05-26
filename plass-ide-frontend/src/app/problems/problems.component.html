@@ -11,7 +11,7 @@
                         제목
                     </th>
                     <th width="150rem">
-                        작성자
+                        카테고리
                     </th>
                     <th width="100rem">
                         작성일
@@ -22,128 +22,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr (click)="handleClickProblem(0)">
-                    <td>01</td>
-                    <td class="title">print Hello world!</td>
-                    <td>관리자</td>
-                    <td>98.01.13</td>
-                    <td>
-                        <span></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01</td>
-                    <td class="title">print Hello world!</td>
-                    <td>관리자</td>
-                    <td>98.01.13</td>
-                    <td>
-                        <span></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01</td>
-                    <td class="title">print Hello world!</td>
-                    <td>관리자</td>
-                    <td>98.01.13</td>
-                    <td>
-                        <span></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01</td>
-                    <td class="title">print Hello world!</td>
-                    <td>관리자</td>
-                    <td>98.01.13</td>
-                    <td>
-                        <span></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01</td>
-                    <td class="title">print Hello world!</td>
-                    <td>관리자</td>
-                    <td>98.01.13</td>
-                    <td>
-                        <span></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01</td>
-                    <td class="title">print Hello world!</td>
-                    <td>관리자</td>
-                    <td>98.01.13</td>
-                    <td>
-                        <span></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01</td>
-                    <td class="title">print Hello world!</td>
-                    <td>관리자</td>
-                    <td>98.01.13</td>
-                    <td>
-                        <span></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01</td>
-                    <td class="title">print Hello world!</td>
-                    <td>관리자</td>
-                    <td>98.01.13</td>
-                    <td>
-                        <span></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01</td>
-                    <td class="title">print Hello world!</td>
-                    <td>관리자</td>
-                    <td>98.01.13</td>
-                    <td>
-                        <span></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01</td>
-                    <td class="title">print Hello world!</td>
-                    <td>관리자</td>
-                    <td>98.01.13</td>
-                    <td>
-                        <span></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01</td>
-                    <td class="title">print Hello world!</td>
-                    <td>관리자</td>
-                    <td>98.01.13</td>
-                    <td>
-                        <span></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01</td>
-                    <td class="title">print Hello world!</td>
-                    <td>관리자</td>
-                    <td>98.01.13</td>
-                    <td>
-                        <span></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01</td>
-                    <td class="title">print Hello world!</td>
-                    <td>관리자</td>
-                    <td>98.01.13</td>
-                    <td>
-                        <span></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01</td>
-                    <td class="title">print Hello world!</td>
-                    <td>관리자</td>
-                    <td>98.01.13</td>
+                <tr *ngFor="let problem of problems; let i = index" (click)="handleClickProblem(problem.id)">
+                    <td>{{problem.id}}</td>
+                    <td class="title">{{problem.name}}</td>
+                    <td>{{problem.category}}</td>
+                    <td>{{getDate(problem.created)}}</td>
                     <td>
                         <span></span>
                     </td>
