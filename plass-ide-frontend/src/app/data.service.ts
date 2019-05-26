@@ -64,6 +64,17 @@ export class DataService {
             );
     }
 
+    public runJavaSource(source: string): Observable<any> {
+        const payload = {
+            source,
+        };
+
+        return this.http.post(`${this.apiUrl}/run`, payload, { headers: new HttpHeaders({ timeout: `${60 * 1000}` }) }).pipe(
+            map((value: any) => value.hash),
+            catchError(error => this.handleError(error)),
+        );
+    }
+
     public getResult(hash: string, isError: boolean, index?: number): Observable<any> {
         return this.http.get(`${this.apiUrl}/run/result/${hash}?is_error=${isError}&index=${index}`)
             .pipe(
