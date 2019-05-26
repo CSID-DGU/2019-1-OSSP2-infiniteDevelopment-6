@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
             .subscribe(
                 value => {
                     if (value) {
-                        this.router.navigateByUrl('/console');
+                        this.router.navigateByUrl('/directory');
                     }
                 },
             );
@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
             .subscribe(
                 value => {
                     if (value) {
-                        this.router.navigateByUrl('/console');
+                        this.router.navigateByUrl('/directory');
                     }
                 },
             );
