@@ -1,4 +1,4 @@
-import mysql from "mysql2";
+import * as mysql from "mysql2/promise";
 import dbConfig from "../config/database";
 
-export default mysql.createConnection(dbConfig);
+export default mysql.createPool(dbConfig);
