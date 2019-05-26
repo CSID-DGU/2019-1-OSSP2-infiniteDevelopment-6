@@ -13,7 +13,7 @@ import { ConsoleModule } from './console/console.module';
 import { LoginModule } from './login/login.module';
 import { MainModule } from './main/main.module';
 import { DirectoryModule } from './directory/directory.module';
-import { CreatePopupComponent } from './directory/createPopup/createPopup.component';
+import { ProblemsModule } from './problems/problems.module';
 
 @NgModule({
     declarations: [
@@ -29,7 +29,8 @@ import { CreatePopupComponent } from './directory/createPopup/createPopup.compon
         LoginModule,
         ConsoleModule,
         MainModule,
-        DirectoryModule
+        DirectoryModule,
+        ProblemsModule
     ],
     providers: [
         CanActivateGuard,
