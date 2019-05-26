@@ -7,60 +7,13 @@
         <ul>
             <li>
                 <div class="directory-img"></div>
-                <p>directory 1</p>
+                <p>directory 1 <button>F</button></p>
             </li>
-            <li>
+            <li (click)="openCreatePopup()">
                 <div class="directory-img"></div>
-                <p>directory 1</p>
-            </li>
-            <li>
-                <div class="directory-img"></div>
-                <p>directory 1</p>
-            </li>
-            <li>
-                <div class="directory-img"></div>
-                <p>directory 1</p>
-            </li>
-            <li>
-                <div class="directory-img"></div>
-                <p>directory 1</p>
-            </li>
-            <li>
-                <div class="directory-img"></div>
-                <p>directory 1</p>
-            </li>
-            <li>
-                <div class="directory-img"></div>
-                <p>directory 1</p>
-            </li>
-            <li>
-                <div class="directory-img"></div>
-                <p>directory 1</p>
-            </li>
-            <li>
-                <div class="directory-img"></div>
-                <p>directory 1</p>
-            </li>
-            <li>
-                <div class="directory-img"></div>
-                <p>directory 1</p>
-            </li>
-            <li>
-                <div class="directory-img"></div>
-                <p>directory 1</p>
-            </li>
-            <li>
-                <div class="directory-img"></div>
-                <p>directory 1</p>
-            </li>
-            <li>
-                <div class="directory-img"></div>
-                <p>directory 1</p>
-            </li>
-            <li>
-                <div class="directory-img"></div>
-                <p>directory 1</p>
+                <p>add new Project</p>
             </li>
         </ul>
     </div>
 </section>
+<app-createPopup [modalOn]="createModal" (modalOff)="closeModal($event)"></app-createPopup>

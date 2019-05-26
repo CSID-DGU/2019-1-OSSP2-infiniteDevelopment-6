@@ -13,10 +13,11 @@ import { ConsoleModule } from './console/console.module';
 import { LoginModule } from './login/login.module';
 import { MainModule } from './main/main.module';
 import { DirectoryModule } from './directory/directory.module';
+import { CreatePopupComponent } from './directory/createPopup/createPopup.component';
 
 @NgModule({
     declarations: [
-        AppComponent,
+        AppComponent
     ],
     imports: [
         BrowserModule,

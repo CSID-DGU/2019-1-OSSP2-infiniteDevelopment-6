@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared.module';
 import { DirectoryComponent } from './directory.component';
+import { CreatePopupComponent } from './createPopup/createPopup.component';
 
 @NgModule({
     imports: [
@@ -8,10 +9,10 @@ import { DirectoryComponent } from './directory.component';
         SharedModule,
     ],
     declarations: [
-        DirectoryComponent,
+        DirectoryComponent, CreatePopupComponent
     ],
     exports: [
-        DirectoryComponent,
+        DirectoryComponent
     ],
     providers: [],
 })
