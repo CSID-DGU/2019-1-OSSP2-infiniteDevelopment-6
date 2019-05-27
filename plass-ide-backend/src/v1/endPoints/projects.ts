@@ -1,20 +1,42 @@
 import * as express from "express";
-import {existsSync, lstatSync, readdirSync, readFileSync, renameSync, unlinkSync, writeFileSync} from "fs";
 import {join} from "path";
-import {checkFileNameValid} from "../../Util";
-import {IDirectoryNodes} from "../interface";
+import { mkdirSync } from "fs";
 import connection from "../../connection";
+import * as crypto from "crypto";
 
 
 // 파일 저장 디렉토리
 const fileDir = join(__dirname, "../../../files");
 
 const getProjects = async function(req: express.Request, res: express.Response) {
-    const [rows] = await connection.execute("SELECT * FROM projects where user = ")
+    const { user } = req.user;
+
+    try {
+        const [rows] = await connection.execute("SELECT * FROM projects where user = ?", [user.id]);
+
+        res.json(rows);
+    } catch (e) {
+        res.status(400).send();
+    }
+    
 }
 
-const postProjects = function(req: express.Request, res: express.Response) {
+const postProjects = async function(req: express.Request, res: express.Response) {
+    const { name, category } = req.body;
+    const { user } = req.user;
+    if(!name || !category) { res.status(400).send(); return; }
+    
+    const path = crypto.createHash("md5").update(new Date().toString()).digest("hex").substring(0, 40);
 
+    try {
+        await connection.execute("INSERT INTO projects(name, category, user, path) VALUES (?, ?, ?, ?)", [name, category, user.id, path]);
+        
+        mkdirSync(`${fileDir}/${user.username}/${path}`);
+        res.status(200).send();
+    } catch (e) {
+        console.log(e);
+        res.status(400).send();
+    }
 }
 
 const getProject = function(req: express.Request, res: express.Response) {

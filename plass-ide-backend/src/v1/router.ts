@@ -1,6 +1,7 @@
 import * as express from "express";
 import {authenticate} from "./auth";
 import {authEndPoint, fileEndPoint, problemEndPoint, runEndPoint} from "./endPoints";
+import { ProjectsEndPoint } from "./endPoints/projects";
 
 const router = express.Router();
 
@@ -29,5 +30,8 @@ router.get("/run/result/:hash", authenticate, runEndPoint.result);
 router.get("/problems", problemEndPoint.getProblems);
 
 router.get("/problems/:id", problemEndPoint.getProblem);
+
+router.get("/projects", authenticate, ProjectsEndPoint.getProjects);
+router.post("/projects", authenticate, ProjectsEndPoint.postProjects);
 
 export {router};
