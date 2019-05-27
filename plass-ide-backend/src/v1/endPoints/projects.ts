@@ -1,6 +1,7 @@
 import * as express from "express";
 import {join} from "path";
-import { mkdirSync, readdirSync, statSync, writeFileSync, existsSync, readFileSync } from "fs";
+import { mkdirSync, readdirSync, statSync, writeFileSync, existsSync, readFileSync, unlinkSync, renameSync } from "fs";
+import * as rimraf from 'rimraf';
 import connection from "../../connection";
 import * as crypto from "crypto";
 
@@ -220,12 +221,83 @@ const getProjectFile = async function(req: express.Request, res: express.Respons
     }
 }
 
-const putProjectFile = function(req: express.Request, res: express.Response) {
+const putProjectFile = async function(req: express.Request, res: express.Response) {
+    const id = parseInt(req.params.id, 10);
+    const path = req.params[0];
+    const { data, name } = req.body;
 
+    const { user } = req.user;
+    if(!id) { res.status(400).send("id is not integer"); return; }
+    if(!path) { res.status(400).send("no file path"); return; }
+
+    try {
+        const [rows] = await connection.execute("SELECT * FROM projects WHERE id = ? AND user = ? AND enabled = true", [id, user.id]);
+        if(rows.length != 1) { res.status(400).send("no project data"); return; }
+        const result = rows[0];
+
+        const userpath = getUserPath({...user, ...result});
+        const _path = `${userpath}/${path}`;
+        
+
+        if(!existsSync(_path)) {
+            res.status(400).send("no file");
+            return;
+        }
+        const state = statSync(_path);
+        const isDirectory = state.isDirectory();
+        
+        if(!isDirectory && data) {
+            writeFileSync(_path, data);
+        }
+
+        if(name) {
+            const directoryPath = _path.substring(0, _path.lastIndexOf("/"));
+            const newName = `${directoryPath}/${name}`;
+            console.log(newName)
+            renameSync(_path, newName);
+        }
+
+        res.status(200).send();
+    } catch (e) {
+        console.log(e);
+        res.status(400).send();
+    }
 }
 
-const deleteProjectFile = function(req: express.Request, res: express.Response) {
+const deleteProjectFile = async function(req: express.Request, res: express.Response) {
+    const id = parseInt(req.params.id, 10);
+    const path = req.params[0];
 
+    const { user } = req.user;
+    if(!id) { res.status(400).send("id is not integer"); return; }
+    if(!path) { res.status(400).send("no file path"); return; }
+
+    try {
+        const [rows] = await connection.execute("SELECT * FROM projects WHERE id = ? AND user = ? AND enabled = true", [id, user.id]);
+        if(rows.length != 1) { res.status(400).send("no project data"); return; }
+        const result = rows[0];
+
+        const userpath = getUserPath({...user, ...result});
+        const _path = `${userpath}/${path}`;
+
+        if(!existsSync(_path)) {
+            res.status(400).send("no file");
+            return;
+        }
+        const state = statSync(_path);
+        const isDirectory = state.isDirectory();
+        
+        if(isDirectory) {
+            rimraf.sync(_path);
+        } else {
+            unlinkSync(_path);
+        }
+
+        res.status(200).send();
+    } catch (e) {
+        console.log(e);
+        res.status(400).send();
+    }
 }
 
 export const ProjectsEndPoint = {

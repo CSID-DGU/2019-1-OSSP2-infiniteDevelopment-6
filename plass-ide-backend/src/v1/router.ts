@@ -45,5 +45,7 @@ router.delete("/projects/:id", authenticate, ProjectsEndPoint.deleteProject);
  * index 0 is a file name
  */
 router.get("/projects/:id/*", authenticate, ProjectsEndPoint.getProjectFile);
+router.put("/projects/:id/*", authenticate, ProjectsEndPoint.putProjectFile);
+router.delete("/projects/:id/*", authenticate, ProjectsEndPoint.deleteProjectFile);
 
 export {router};
