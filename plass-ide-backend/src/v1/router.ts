@@ -1,16 +1,8 @@
-import * as bodyParser from "body-parser";
-import * as cookieParser from "cookie-parser";
 import * as express from "express";
-import * as morgan from "morgan";
-import {logger} from "../logger";
 import {authenticate} from "./auth";
 import {authEndPoint, fileEndPoint, problemEndPoint, runEndPoint} from "./endPoints";
 
 const router = express.Router();
-
-router.use(cookieParser());
-router.use(bodyParser.json());
-router.use(morgan(logger));
 
 router.get("/signout", authEndPoint.signout);
 
