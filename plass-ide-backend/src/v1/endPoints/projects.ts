@@ -45,7 +45,7 @@ function getFiles(path: string): Array<IFile> {
     
         return files
     }
-    
+
     return _getFiles(path);
 }
 
@@ -72,10 +72,11 @@ const postProjects = async function(req: express.Request, res: express.Response)
     const path = crypto.createHash("md5").update(new Date().toString()).digest("hex").substring(0, 40);
 
     try {
-        await connection.execute("INSERT INTO projects(name, category, user, path) VALUES (?, ?, ?, ?)", [name, category, user.id, path]);
-        
+        const result = await connection.execute("INSERT INTO projects(name, category, user, path) VALUES (?, ?, ?, ?)", [name, category, user.id, path]);
+
         mkdirSync(getUserPath({...user, path}));
-        res.status(200).send();
+
+        res.status(200).send({id: result[0].insertId});
     } catch (e) {
         console.log(e);
         res.status(400).send();
