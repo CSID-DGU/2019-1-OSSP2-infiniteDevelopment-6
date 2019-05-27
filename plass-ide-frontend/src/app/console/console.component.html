@@ -1,25 +1,19 @@
-<div class="ide-wrapper">
+<div class="ide-wrapper" >
     <aside class="file-navigator">
-        <ul>
-            <li>
-                file2
-            </li>
-            <li>
-                file3
-            </li>
-            <li>
-                file1
-            </li>
-            <li>
-                file1
-            </li>
-            <li>
-                file1
-            </li>
-            <li>
-                file1
-            </li>
-        </ul>
+        <div class="file-wrapper" *ngIf="project">
+            <h1>{{project.name}}</h1>
+            <ul>
+                <ng-template #recursiveList let-list>
+                    <li *ngFor="let file of list">
+                        {{file.name}}
+                        <ul *ngIf="file.isDirectory && file.files.length > 0">
+                            <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: file.files }"></ng-container>
+                        </ul>
+                    </li>
+                </ng-template>
+                <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: project.files }"></ng-container>
+            </ul>
+        </div>
     </aside>
     <section>
         <article class="editor-wrapper">

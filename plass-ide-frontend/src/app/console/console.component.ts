@@ -3,9 +3,9 @@ import {
     OnInit,
     ViewChild,
 } from '@angular/core';
-import { environment } from '../../environments/environment';
 import { DataService } from '../data.service';
-import { ProblemContent } from '../types';
+import { ActivatedRoute } from '@angular/router';
+import { Project } from '../types';
 
 @Component({
     selector: 'app-console',
@@ -14,51 +14,21 @@ import { ProblemContent } from '../types';
 })
 export class ConsoleComponent implements OnInit {
     @ViewChild('editor') editor;
-
-    javaProblemLabels: string[] = [];
-    javaProblems: ProblemContent[] = [];
-    answer = '';
-    result = '';
-
-    apiUrl = environment.apiUrl;
+    project: Project;
 
     public constructor(
         private dataService: DataService,
+        private route: ActivatedRoute
     ) {}
 
-    public ngOnInit() {}
+    public ngOnInit() {
+        const id = parseInt(this.route.snapshot.paramMap.get("id"));
+        // TODO: error exception
 
-    public runSource() {
-        this.dataService.runJavaSource(this.answer)
-            .subscribe(
-                hash => {
-                    this.getResult(hash, false, -1);
-                    this.result = 'RUNNING...\n';
-                },
-            );
-    }
-
-    public getResult(hash: string, isError: boolean, index?: number) {
-        this.dataService.getResult(hash, isError, index)
-            .subscribe(
-                value => {
-                    if (value.closed) {
-                        return;
-                    }
-
-                    if (value.err) {
-                        this.result += `ERROR: ${value.data}`;
-                    } else {
-                        this.result += `OUTPUT: ${value.data}`;
-                    }
-
-                    if (isError !== value.err) {
-                        // 에러 처리
-                        this.getResult(hash, !isError, value.index);
-                    } else {
-                        this.getResult(hash, isError, value.index);
-                    }
-                },
-            );
+        this.dataService.getProject({id}).subscribe((project) => {
+            this.project = project;
+        }, (error) => {
+            // TODO: error exception
+        });
     }
 }
