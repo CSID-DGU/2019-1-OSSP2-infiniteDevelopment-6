@@ -32,10 +32,11 @@ export interface AccordionEvent {
 export interface File {
     name: string;
     isDirectory: boolean;
+    path: string;
     ext?: string;
     size?: number;
     files?: Array<File>;
-    data?: any;
+    data?: string;
 }
 
 export interface Project {

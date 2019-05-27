@@ -13,7 +13,7 @@ import {
     catchError,
 } from 'rxjs/operators';
 import { environment } from '../environments/environment';
-import { ProblemContent, Problem, Project } from './types';
+import { ProblemContent, Problem, Project, File } from './types';
 
 @Injectable({
     providedIn: 'root',
@@ -125,5 +125,12 @@ export class DataService {
             .pipe(
                 map((value: any) => value)
             );
+    }
+
+    public getFile({id, path, name}: {id:number, path: string, name: string}): Observable<File> {
+        return this.http.get(`${this.apiUrl}/projects/${id}/${path}/${name}`)
+        .pipe(
+            map((value: any) => value)
+        )
     }
 }

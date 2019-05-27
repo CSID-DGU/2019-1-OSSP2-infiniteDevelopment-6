@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 import { DataService } from '../data.service';
 import { ActivatedRoute } from '@angular/router';
-import { Project } from '../types';
+import { Project, File } from '../types';
 
 @Component({
     selector: 'app-console',
@@ -15,6 +15,7 @@ import { Project } from '../types';
 export class ConsoleComponent implements OnInit {
     @ViewChild('editor') editor;
     project: Project;
+    text: string = "";
 
     public constructor(
         private dataService: DataService,
@@ -29,6 +30,19 @@ export class ConsoleComponent implements OnInit {
             this.project = project;
         }, (error) => {
             // TODO: error exception
+        });
+    }
+
+    public clickFile(file: File) {
+        if(file.isDirectory) {
+            return;
+        }
+
+        const id = parseInt(this.route.snapshot.paramMap.get("id"));
+        const {path, name} = file;
+        this.dataService.getFile({id, path, name}).subscribe(value => {
+            file.data = value.data;
+            this.text = value.data;
         });
     }
 }

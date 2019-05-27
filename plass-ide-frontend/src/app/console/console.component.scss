@@ -14,9 +14,19 @@
       font-weight: 600;
     }
     ul {
-      margin-left: 10px;
+      padding-left: 10px;
+      border-left: 1px solid #fafafa;
       li {
         line-height: 1.2rem;
+        p {
+          cursor: pointer;
+        }
+        p:hover {
+          background: #f0f0f0;
+        }
+        p:active {
+          background: #e0e0e0;
+        }
       }
     }
   }
