@@ -13,6 +13,7 @@ export interface IProblem {
 export interface IFile {
     name: string;
     isDirectory: boolean;
+    path: string;
     ext?: string;
     size?: number;
     files?: Array<IFile>;

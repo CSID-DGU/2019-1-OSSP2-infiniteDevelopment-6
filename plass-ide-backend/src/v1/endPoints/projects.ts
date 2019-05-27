@@ -21,17 +21,17 @@ function getUserPath({username, path}: {username: string, path: string}) {
  * implments by recursive function
  */
 function getFiles(path: string): Array<IFile> {
-    function _getFiles(path: string): Array<IFile> {
+    function _getFiles(path: string, subpath: string=""): Array<IFile> {
         const result = readdirSync(path);
         const files: Array<IFile> = result.map((name: string):IFile => {
             const _path = `${path}/${name}`;
             const state = statSync(_path);
             const isDirectory = state.isDirectory();
     
-            const file: IFile = { name, isDirectory };
+            const file: IFile = { name, isDirectory, path: subpath };
     
             if(isDirectory) {
-                file.files = _getFiles(_path);
+                file.files = _getFiles(_path, subpath + name);
             } else {
                 file.size = state.size;
                 const lastIndex = name.lastIndexOf(".");
@@ -207,7 +207,7 @@ const getProjectFile = async function(req: express.Request, res: express.Respons
         const isDirectory = state.isDirectory();
         const name = _path.substring(_path.lastIndexOf("/") + 1);
 
-        const file: IFile = {name, isDirectory}
+        const file: IFile = {name, isDirectory, path}
         
         if(isDirectory) {
             file.files = getFiles(_path);
