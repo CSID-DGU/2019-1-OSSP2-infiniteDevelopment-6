@@ -21,31 +21,32 @@ function getUserPath({username, path}: {username: string, path: string}) {
  * implments by recursive function
  */
 function getFiles(path: string): Array<IFile> {
-    return _getFiles(path);
-}
-function _getFiles(path: string): Array<IFile> {
-    const result = readdirSync(path);
-    const files: Array<IFile> = result.map((name: string):IFile => {
-        const _path = `${path}/${name}`;
-        const state = statSync(_path);
-        const isDirectory = state.isDirectory();
-
-        const file: IFile = { name, isDirectory };
-
-        if(isDirectory) {
-            file.files = _getFiles(_path);
-        } else {
-            file.size = state.size;
-            const lastIndex = name.lastIndexOf(".");
-            if(lastIndex != -1) {
-                file.ext = name.substring(lastIndex + 1);
+    function _getFiles(path: string): Array<IFile> {
+        const result = readdirSync(path);
+        const files: Array<IFile> = result.map((name: string):IFile => {
+            const _path = `${path}/${name}`;
+            const state = statSync(_path);
+            const isDirectory = state.isDirectory();
+    
+            const file: IFile = { name, isDirectory };
+    
+            if(isDirectory) {
+                file.files = _getFiles(_path);
+            } else {
+                file.size = state.size;
+                const lastIndex = name.lastIndexOf(".");
+                if(lastIndex != -1) {
+                    file.ext = name.substring(lastIndex + 1);
+                }
             }
-        }
-
-        return file;
-    });
-
-    return files
+    
+            return file;
+        });
+    
+        return files
+    }
+    
+    return _getFiles(path);
 }
 
 
