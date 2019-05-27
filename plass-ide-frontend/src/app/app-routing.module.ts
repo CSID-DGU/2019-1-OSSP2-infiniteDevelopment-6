@@ -15,7 +15,7 @@ const routes: Routes = [
     { path: '', component: MainComponent },
     { path: 'login', component: LoginComponent },
     { path: 'directory', component: DirectoryComponent, canActivate: [CanActivateGuard] },
-    { path: 'console', component: ConsoleComponent, canActivate: [CanActivateGuard] },
+    { path: 'console/:id', component: ConsoleComponent, canActivate: [CanActivateGuard] },
     { path: 'problems', component: ProblemsComponent},
     { path: 'problems/:id', component: DetailComponent},
     { path: '**', redirectTo: '' },

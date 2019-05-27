@@ -13,7 +13,7 @@ import {
     catchError,
 } from 'rxjs/operators';
 import { environment } from '../environments/environment';
-import { ProblemContent, Problem } from './types';
+import { ProblemContent, Problem, Project } from './types';
 
 @Injectable({
     providedIn: 'root',
@@ -96,6 +96,20 @@ export class DataService {
             .pipe(
                 map((value: any)=> value),
                 catchError(error => this.handleError(error))
+            );
+    }
+
+    public getProjects(): Observable<Array<Project>> {
+        return this.http.get(`${this.apiUrl}/projects`)
+            .pipe(
+                map((value: any) => value)
+            );
+    }
+
+    public getProject({id}:{id: number}): Observable<Project> {
+        return this.http.get(`${this.apiUrl}/projects/${id}`)
+            .pipe(
+                map((value: any) => value)
             );
     }
 }

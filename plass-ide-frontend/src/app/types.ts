@@ -28,3 +28,22 @@ export interface AccordionEvent {
     index: number;
     originalEvent: MouseEvent;
 }
+
+export interface File {
+    name: string;
+    isDirectory: boolean;
+    ext?: string;
+    size?: number;
+    files?: Array<File>;
+    data?: any;
+}
+
+export interface Project {
+    id: number;
+    name: string;
+    category: string;
+    created: string;
+    path: string;
+    enabled: number;
+    files?: Array<File>;
+}
