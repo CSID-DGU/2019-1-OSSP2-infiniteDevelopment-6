@@ -53,7 +53,7 @@ const getProjects = async function(req: express.Request, res: express.Response) 
 
 
     try {
-        const [rows] = await connection.execute("SELECT * FROM projects where user = ?", [user.id]);
+        const [rows] = await connection.execute("SELECT * FROM projects where user = ? AND enabled = true", [user.id]);
 
         res.json(rows);
     } catch (e) {
@@ -87,7 +87,7 @@ const getProject = async function(req: express.Request, res: express.Response) {
 
 
     try {
-        const [rows] = await connection.execute("SELECT * FROM projects WHERE id = ? AND user = ?", [id, user.id]);
+        const [rows] = await connection.execute("SELECT * FROM projects WHERE id = ? AND user = ? AND enabled = true", [id, user.id]);
         if(rows.length != 1) { res.status(400).send("no data"); return; }
         const result = rows[0];
 
@@ -112,7 +112,7 @@ const postProject = async function(req: express.Request, res: express.Response) 
     if(!filename || !data) { res.status(400).send("no data"); return; }
 
     try {
-        const [rows] = await connection.execute("SELECT * FROM projects WHERE id = ? AND user = ?", [id, user.id]);
+        const [rows] = await connection.execute("SELECT * FROM projects WHERE id = ? AND user = ? AND enabled = true", [id, user.id]);
         if(rows.length != 1) { res.status(400).send("no project data"); return; }
         const result = rows[0];
 
@@ -140,11 +140,11 @@ const postProject = async function(req: express.Request, res: express.Response) 
 const putProject = async function(req: express.Request, res: express.Response) {
     const id = parseInt(req.params.id, 10);
     const { user } = req.user;
-    const { name, category } = req.body;
+    const { name, category, enabled } = req.body;
     if(!id) { res.status(400).send("id is not integer"); return; }
 
     try {
-        const [rows] = await connection.execute("SELECT * FROM projects WHERE id = ? AND user = ?", [id, user.id]);
+        const [rows] = await connection.execute("SELECT * FROM projects WHERE id = ? AND user = ? AND enabled = true", [id, user.id]);
         if(rows.length != 1) { res.status(400).send("no project data"); return; }
         const result = rows[0]
         
@@ -160,8 +160,23 @@ const putProject = async function(req: express.Request, res: express.Response) {
     }
 }
 
-const deleteProject = function(req: express.Request, res: express.Response) {
+const deleteProject = async function(req: express.Request, res: express.Response) {
+    const id = parseInt(req.params.id, 10);
+    const { user } = req.user;
+    if(!id) { res.status(400).send("id is not integer"); return; }
 
+    try {
+        const [rows] = await connection.execute("SELECT * FROM projects WHERE id = ? AND user = ?", [id, user.id]);
+        if(rows.length != 1) { res.status(400).send("no project data"); return; }
+        const result = rows[0]
+
+        await connection.execute("UPDATE projects SET enabled = 0 WHERE id = ?", [id]);
+
+        res.status(200).send({});
+    } catch (e) {
+        console.log(e);
+        res.status(400).send();
+    }
 }
 
 const getProjectFile = function(req: express.Request, res: express.Response) {
