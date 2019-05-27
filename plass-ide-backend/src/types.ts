@@ -16,4 +16,5 @@ export interface IFile {
     ext?: string;
     size?: number;
     files?: Array<IFile>;
+    data?: any;
 }

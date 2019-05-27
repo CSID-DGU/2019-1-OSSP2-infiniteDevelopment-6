@@ -37,5 +37,13 @@ router.post("/projects", authenticate, ProjectsEndPoint.postProjects);
 router.get("/projects/:id", authenticate, ProjectsEndPoint.getProject);
 router.post("/projects/:id", authenticate, ProjectsEndPoint.postProject);
 router.put("/projects/:id", authenticate, ProjectsEndPoint.putProject);
+router.delete("/projects/:id", authenticate, ProjectsEndPoint.deleteProject);
+
+
+/**
+ * use * for params with slash 
+ * index 0 is a file name
+ */
+router.get("/projects/:id/*", authenticate, ProjectsEndPoint.getProjectFile);
 
 export {router};
