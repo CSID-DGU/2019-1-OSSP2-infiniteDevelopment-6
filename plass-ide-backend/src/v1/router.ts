@@ -33,6 +33,9 @@ router.get("/problems/:id", problemEndPoint.getProblem);
 
 router.get("/projects", authenticate, ProjectsEndPoint.getProjects);
 router.post("/projects", authenticate, ProjectsEndPoint.postProjects);
+
 router.get("/projects/:id", authenticate, ProjectsEndPoint.getProject);
+router.post("/projects/:id", authenticate, ProjectsEndPoint.postProject);
+router.put("/projects/:id", authenticate, ProjectsEndPoint.putProject);
 
 export {router};
