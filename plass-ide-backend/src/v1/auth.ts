@@ -12,10 +12,8 @@ const passportOption = {
 passport.use("jwt", new Strategy(
     passportOption,
     (payload, next) => {
-        if (payload.userId) {
-            return next(null, {
-                userId: payload.userId,
-            });
+        if (payload.user) {
+            return next(null, { user: payload.user });
         } else {
             return next(null, false);
         }
