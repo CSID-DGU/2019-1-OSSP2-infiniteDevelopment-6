@@ -1,5 +1,6 @@
 import * as express from "express";
 import * as http from "http";
+import * as cookieParser from "cookie-parser";
 
 import {auth} from "./auth";
 import {router} from "./v1/router";
@@ -10,6 +11,7 @@ const app = express();
 
 const server = http.createServer(app);
 
+app.use(cookieParser());
 app.use(auth.initialize());
 
 app.use("/api", router);
