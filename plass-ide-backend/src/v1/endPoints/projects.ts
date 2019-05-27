@@ -1,15 +1,55 @@
 import * as express from "express";
 import {join} from "path";
-import { mkdirSync } from "fs";
+import { mkdirSync, readdirSync, statSync } from "fs";
 import connection from "../../connection";
 import * as crypto from "crypto";
+
+import { IFile } from "../../types";
 
 
 // 파일 저장 디렉토리
 const fileDir = join(__dirname, "../../../files");
 
+// get path 
+function getUserPath({username, path}: {username: string, path: string}) {
+    return `${fileDir}/${username}/${path}`;
+}
+
+/**
+ * get all files in directory
+ * implments by recursive function
+ */
+function getFiles(path: string): Array<IFile> {
+    return _getFiles(path);
+}
+function _getFiles(path: string): Array<IFile> {
+    const result = readdirSync(path);
+    const files: Array<IFile> = result.map((name: string):IFile => {
+        const _path = `${path}/${name}`;
+        const state = statSync(_path);
+        const isDirectory = state.isDirectory();
+
+        const file: IFile = { name, isDirectory };
+
+        if(isDirectory) {
+            file.files = _getFiles(_path);
+        } else {
+            file.size = state.size;
+            const lastIndex = name.lastIndexOf(".");
+            if(lastIndex != -1) {
+                file.ext = name.substring(lastIndex + 1);
+            }
+        }
+
+        return file;
+    });
+
+    return files
+}
+
 const getProjects = async function(req: express.Request, res: express.Response) {
     const { user } = req.user;
+
 
     try {
         const [rows] = await connection.execute("SELECT * FROM projects where user = ?", [user.id]);
@@ -31,7 +71,7 @@ const postProjects = async function(req: express.Request, res: express.Response)
     try {
         await connection.execute("INSERT INTO projects(name, category, user, path) VALUES (?, ?, ?, ?)", [name, category, user.id, path]);
         
-        mkdirSync(`${fileDir}/${user.username}/${path}`);
+        mkdirSync(getUserPath({...user, path}));
         res.status(200).send();
     } catch (e) {
         console.log(e);
@@ -39,8 +79,28 @@ const postProjects = async function(req: express.Request, res: express.Response)
     }
 }
 
-const getProject = function(req: express.Request, res: express.Response) {
+const getProject = async function(req: express.Request, res: express.Response) {
+    const id = parseInt(req.params.id, 10);
+    const { user } = req.user;
+    if(!id) { res.status(400).send("id is not integer"); return; }
 
+
+    try {
+        const [rows] = await connection.execute("SELECT * FROM projects WHERE id = ? AND user = ?", [id, user.id]);
+        if(rows.length != 1) { res.status(400).send("no data"); return; }
+        const result = rows[0];
+
+        const path = getUserPath({...user, ...result});
+        const files: Array<IFile> = getFiles(path);
+
+        res.status(200).send({
+            ...result,
+            files
+        });
+    } catch (e) {
+        console.log(e);
+        res.status(400).send();
+    }
 }
 
 const putProject = function(req: express.Request, res: express.Response) {
