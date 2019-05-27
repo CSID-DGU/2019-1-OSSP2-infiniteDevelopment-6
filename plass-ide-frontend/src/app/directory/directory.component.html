@@ -5,8 +5,7 @@
     </div>
     <div class="directory-wrapper">
         <ul>
-            <list-element *ngFor="let project of projects" 
-                [project]="project" (openProject)="openProject($event)"></list-element>
+            <list-element *ngFor="let project of projects" [project]="project"></list-element>
             <li (click)="openCreatePopup()">
                 <div class="directory-img"></div>
                 <p>add new Project</p>

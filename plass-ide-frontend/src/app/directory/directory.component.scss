@@ -1,9 +1,12 @@
 section{
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+
   .tooltip-wrapper {
     text-align: right;
   }
+  
   .directory-wrapper{
     ul {
       li {

@@ -112,4 +112,11 @@ export class DataService {
                 map((value: any) => value)
             );
     }
+
+    public putProject({id, body}: {id: number, body: any}): Observable<any> {
+        return this.http.put(`${this.apiUrl}/projects/${id}`, body)
+            .pipe(
+                map((value: any) => value)
+            );
+    }
 }

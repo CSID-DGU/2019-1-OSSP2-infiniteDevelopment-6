@@ -1,6 +1,7 @@
 li {
     display: inline-block;
     cursor: pointer;
+
     .directory-img {
       display: inline-block;
       width: 150px;
@@ -8,7 +9,17 @@ li {
       margin: 1rem 1rem 0.25rem 1rem;
       background: pink;
     }
-    p {
-      text-align: center;
+    .name-wrapper {
+      p {
+        text-align: center;
+      }
+    }
+    .rename-wrapper {
+      display: flex;
+      justify-content: center;
+      input[type=text] {
+        width: 100px;
+        padding: 0 5px;
+      }
     }
 }

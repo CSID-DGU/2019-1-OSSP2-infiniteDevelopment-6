@@ -1,4 +1,14 @@
 <li (click)="clickProject()">
     <div class="directory-img"></div>
-    <p>{{project.name}} <button>F</button></p>
+    <div class="name-wrapper">
+        <p *ngIf="!isChange">
+            {{project.name}}
+            <button class="btn-change" (click)="toggleIsChange($event)">F</button>
+        </p>
+        <p  *ngIf="isChange" 
+            class="rename-wrapper" (click)="preventEvent($event)">
+            <input type=text [(ngModel)]="name" (click)="clickInput($event)"/>
+            <button class="change-button" (click)="modifyName($event)">c</button>
+        </p>
+    </div>
 </li>

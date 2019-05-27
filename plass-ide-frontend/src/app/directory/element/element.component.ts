@@ -2,9 +2,13 @@ import {
     Component,
     Input,
     Output,
-    EventEmitter
+    EventEmitter,
+    OnInit
 } from '@angular/core';
 import { Project } from 'src/app/types';
+import { projection } from '@angular/core/src/render3';
+import { DataService } from 'src/app/data.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -12,11 +16,50 @@ import { Project } from 'src/app/types';
     templateUrl: './element.component.html',
     styleUrls: ['./element.component.scss'],
 })
-export class ElementComponent {
+export class ElementComponent implements OnInit{
     @Input() project: Project;
-    @Output() openProject: EventEmitter<number> = new EventEmitter<number>();
+    
+    isChange: boolean = false;
+    name: string = "";
+    isDoubleClick: boolean = false;
+    constructor(private dataService: DataService, 
+        private router: Router) {}
+
+    ngOnInit() {
+        this.name = this.project.name;
+    }
 
     clickProject() {
-        this.openProject.emit(this.project.id);
+        if(this.isDoubleClick) {
+            this.router.navigateByUrl(`console/${this.project.id}`);
+            return;
+        }
+        this.isDoubleClick = true;
+        setTimeout(()=> {
+            this.isDoubleClick = false;
+        }, 200);
+    }
+
+    clickInput($event) {
+        $event.stopPropagation();
+    }
+
+    toggleIsChange($event)  {
+        $event.stopPropagation();
+        this.isChange = !this.isChange;
+    }
+
+    modifyName($event) {
+        $event.stopPropagation();
+        const { id } = this.project;
+        const name = this.name;
+        this.dataService.putProject({id, body: {name}}).subscribe(
+            (value) => {},
+            (error) => {
+                alert("이름 변경 중 에러가 발생 했습니다.");
+            }
+        )
+        this.isChange = false;
+        this.project.name = name;
     }
 }

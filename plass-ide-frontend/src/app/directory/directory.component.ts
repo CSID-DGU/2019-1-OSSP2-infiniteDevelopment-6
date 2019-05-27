@@ -27,11 +27,7 @@ export class DirectoryComponent implements OnInit {
             alert("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
         });
     }
-
-    public openProject(id: number) {
-        this.router.navigateByUrl(`/console/${id}`);
-    }
-
+    
     public openCreatePopup() {
         this.createModal = true;
     }
