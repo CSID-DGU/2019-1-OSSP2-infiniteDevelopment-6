@@ -1,6 +1,6 @@
 <div class="ide-wrapper" >
     <aside class="file-navigator">
-        <div class="file-wrapper" *ngIf="project">
+        <div class="file-wrapper">
             <h1>{{project.name}}</h1>
             <ul>
                 <ng-template #recursiveList let-list>
@@ -17,7 +17,7 @@
     </aside>
     <section>
         <article class="editor-wrapper">
-            <div ace-editor class="editor" theme='eclipse'></div>
+            <div style="font-size: 16px; line-height: 1.3;" ace-editor class="editor" theme='eclipse' [mode]="project.category" ></div>
         </article>
         <article class="console-wrapper">
             <div ace-editor class="console" theme='eclipse'></div>
