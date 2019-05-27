@@ -4,6 +4,8 @@ import {
     Output,
     EventEmitter
 } from '@angular/core';import { shiftInitState } from '@angular/core/src/view';
+import { DataService } from 'src/app/data.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -20,22 +22,36 @@ export class CreatePopupComponent {
     nameError: boolean = false;
     typeError: boolean = false;
 
+    doubleSubmit: boolean = false;
+    
+    constructor(private dataService: DataService,
+        private router: Router) {}
+
     public handleName(e) {
         this.projectName = e.target.value;
-        console.log(this.projectName)
     }
     public handleType(e) {
         this.projectType = e.target.value;
-        console.log(this.projectType);
     }
 
     public create() {
-        if(!this.validation()) { return; }
+        if(!this.validation()) { this.doubleSubmit = false; return; }
+        this.doubleSubmit = true;
 
         // TODO : send data
+        const body = {
+            name: this.projectName,
+            category: this.projectType
+        };
+
+        this.dataService.postProjects({body}).subscribe(value => {
+            this.router.navigateByUrl(`console/${value.id}`);
+        });
     }
 
     private validation() {
+        if(this.doubleSubmit) return false;
+
         let isValid = true;
         if (!this.projectName) {
             isValid = false;
@@ -48,7 +64,7 @@ export class CreatePopupComponent {
             this.typeError = true;
             setTimeout(()=>{this.typeError = false;}, 800);
         }
-
+        
         return isValid;
     }
 

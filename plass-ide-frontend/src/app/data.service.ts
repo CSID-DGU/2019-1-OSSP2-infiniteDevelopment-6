@@ -105,6 +105,13 @@ export class DataService {
                 map((value: any) => value)
             );
     }
+    
+    public postProjects({body} : {body: any}): Observable<any> {
+        return this.http.post(`${this.apiUrl}/projects`, body)
+            .pipe(
+                map((value: any) => value)
+            );
+    }
 
     public getProject({id}:{id: number}): Observable<Project> {
         return this.http.get(`${this.apiUrl}/projects/${id}`)
