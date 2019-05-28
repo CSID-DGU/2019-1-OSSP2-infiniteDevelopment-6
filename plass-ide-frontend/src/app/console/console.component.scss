@@ -21,6 +21,9 @@
         p {
           cursor: pointer;
         }
+        p.modify {
+          font-style: italic;
+        }
         p:hover {
           background: #f0f0f0;
         }

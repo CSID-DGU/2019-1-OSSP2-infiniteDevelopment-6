@@ -4,7 +4,7 @@
             <ul class="tab-list">
                 <li class="tab" *ngFor="let file of files" 
                     [ngClass]="{'active': file===selectFile}" (click)="clickFile(file)">
-                    <p>
+                    <p [ngClass]="{'is-temp': file.isTemp || file.modify}">
                         {{file.name}}
                     </p>
                 </li>
@@ -12,7 +12,7 @@
         </ng-container>
     </div>
     <div class="editor-wrapper">
-        <div ace-editor class="editor" theme='eclipse' [(text)]="text" 
-            (textChanged)="changeEditor()"></div>
+        <div ace-editor class="editor" theme='eclipse' [(text)]="this.selectFile ? this.selectFile.data : text" 
+            (textChanged)="changeEditor($event)"></div>
     </div>
 </article>

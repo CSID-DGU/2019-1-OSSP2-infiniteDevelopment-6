@@ -13,6 +13,7 @@ import { File } from 'src/app/types';
 export class TabComponent {
     public files:Array<File> = [];
     public selectFile:File = null;
+    public isFileChange: boolean = false;
     public text:string = "";
 
     pushFile(file:File) {
@@ -24,13 +25,14 @@ export class TabComponent {
 
     clickFile(file: File) {
         this.selectFile = file;
-        this.text = file.data;
+        this.isFileChange = true;
     }
 
-    changeEditor() {
+    changeEditor($event) {
         if(this.selectFile) {
-           this.selectFile.modify = true; 
-           this.selectFile.data = this.text;
+            // TODO: bug fix: a file change to modify state when change file
+            if(this.isFileChange) { this.isFileChange = false; return };
+            this.selectFile.modify = true; 
         } else {
             const tempFile: File = {
                 name: "undefined",

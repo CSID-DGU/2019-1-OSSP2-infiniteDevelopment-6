@@ -5,7 +5,7 @@
             <ul>
                 <ng-template #recursiveList let-list>
                     <li *ngFor="let file of list">
-                        <p (click)="clickFile(file)">{{file.name}}</p>
+                        <p (click)="clickFile(file)" [ngClass]="{'modify': file.isTemp || file.modify}">{{file.name}}</p>
                         <ul *ngIf="file.isDirectory && file.files.length > 0">
                             <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: file.files }"></ng-container>
                         </ul>
