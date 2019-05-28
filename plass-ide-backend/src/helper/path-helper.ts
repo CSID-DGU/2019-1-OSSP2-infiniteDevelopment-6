@@ -1,5 +1,5 @@
 import {join} from "path";
-import { readdirSync, statSync } from "fs";
+import { readdirSync, statSync, readFileSync } from "fs";
 
 import { IFile } from "../types";
 
@@ -15,7 +15,11 @@ export function getUserPath({username, path}: {username: string, path: string}) 
  * get all files in directory
  * implments by recursive function
  */
-export function getFiles(path: string): Array<IFile> {
+interface IOption {
+    data: boolean;
+}
+
+export function getFiles(path: string, option: IOption={data: false}): Array<IFile> {
     function _getFiles(path: string, subpath: string=""): Array<IFile> {
         const result = readdirSync(path);
         const files: Array<IFile> = result.map((name: string):IFile => {
@@ -32,6 +36,11 @@ export function getFiles(path: string): Array<IFile> {
                 const lastIndex = name.lastIndexOf(".");
                 if(lastIndex != -1) {
                     file.ext = name.substring(lastIndex + 1);
+                }
+
+                if(option.data) {
+                    const filebuffer = readFileSync(_path);
+                    file.data = filebuffer.toString('utf8');
                 }
             }
     

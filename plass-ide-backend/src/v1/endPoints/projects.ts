@@ -54,7 +54,7 @@ const getProject = async function(req: express.Request, res: express.Response) {
         const result = rows[0];
 
         const path = getUserPath({...user, ...result});
-        const files: Array<IFile> = getFiles(path);
+        const files: Array<IFile> = getFiles(path, { data: true });
 
         res.status(200).send({
             ...result,
