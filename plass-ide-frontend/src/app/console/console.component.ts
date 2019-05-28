@@ -16,6 +16,7 @@ export class ConsoleComponent implements OnInit {
     @ViewChild('editor') editor;
     project: Project;
     text: string = "";
+    tabs: Array<any> = [];
 
     public constructor(
         private dataService: DataService,

@@ -1,0 +1,17 @@
+article{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    .tabs-wrapper {
+        height: 25px;
+        border-bottom: 1px solid #303030;
+    }
+    .editor-wrapper{
+        height: 100%;
+        .editor {
+            height: 100%;
+            font-size: 16px; 
+            line-height: 1.3;
+        }
+    }
+}

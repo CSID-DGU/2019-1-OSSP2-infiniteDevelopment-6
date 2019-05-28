@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared.module';
 // import { ConsoleRoutingModule } from './console-routing.module';
 import { ConsoleComponent } from './console.component';
+import { TabComponent } from './tab/tab.component';
 
 @NgModule({
     imports: [
@@ -9,7 +10,7 @@ import { ConsoleComponent } from './console.component';
         SharedModule,
     ],
     declarations: [
-        ConsoleComponent,
+        ConsoleComponent, TabComponent
     ],
     exports: [
         ConsoleComponent,

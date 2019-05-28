@@ -7,7 +7,7 @@
     width: 25%;
     max-width: 200px;
     background: #fafafa;
-    border-right: #303030;
+    border-right: 1px solid #303030;
     padding-left: 10px;
     h1 {
       font-size: 1rem;
@@ -34,15 +34,20 @@
     display: flex;
     width: 100%;
     flex-direction: column;
-    article.editor-wrapper {
+    .editor-wrapper {
+      display: flex;
+      flex-direction: row;
       height: 75%;
       border-bottom: 1px solid #303030;
-      .editor {
-        width: 100%;
-        height: 100%;
+      tab-component {
+        flex: 1;
+        border-right: 1px solid #303030;
+      }
+      tab-component:last-child {
+        border-right: 0;
       }
     }
-    article.console-wrapper {
+    .console-wrapper {
       height: 25%;
       .console {
         width: 100%;
