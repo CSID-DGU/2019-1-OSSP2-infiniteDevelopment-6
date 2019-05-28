@@ -1,53 +1,12 @@
 import * as express from "express";
-import {join} from "path";
-import { mkdirSync, readdirSync, statSync, writeFileSync, existsSync, readFileSync, unlinkSync, renameSync } from "fs";
+import { mkdirSync, statSync, writeFileSync, existsSync, readFileSync, unlinkSync, renameSync } from "fs";
 import * as rimraf from 'rimraf';
 import connection from "../../connection";
 import * as crypto from "crypto";
 
+import { getUserPath, getFiles } from '../../helper/path-helper';
+
 import { IFile } from "../../types";
-
-
-// 파일 저장 디렉토리
-const fileDir = join(__dirname, "../../../files");
-
-// get path 
-function getUserPath({username, path}: {username: string, path: string}) {
-    return `${fileDir}/${username}/${path}`;
-}
-
-/**
- * get all files in directory
- * implments by recursive function
- */
-function getFiles(path: string): Array<IFile> {
-    function _getFiles(path: string, subpath: string=""): Array<IFile> {
-        const result = readdirSync(path);
-        const files: Array<IFile> = result.map((name: string):IFile => {
-            const _path = `${path}/${name}`;
-            const state = statSync(_path);
-            const isDirectory = state.isDirectory();
-    
-            const file: IFile = { name, isDirectory, path: subpath };
-    
-            if(isDirectory) {
-                file.files = _getFiles(_path, subpath + name);
-            } else {
-                file.size = state.size;
-                const lastIndex = name.lastIndexOf(".");
-                if(lastIndex != -1) {
-                    file.ext = name.substring(lastIndex + 1);
-                }
-            }
-    
-            return file;
-        });
-    
-        return files
-    }
-
-    return _getFiles(path);
-}
 
 
 const getProjects = async function(req: express.Request, res: express.Response) {
