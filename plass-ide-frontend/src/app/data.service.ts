@@ -127,6 +127,13 @@ export class DataService {
             );
     }
 
+    public deletProject({id, body}: {id: number, body?: any}) :Observable<any> {
+        return this.http.delete(`${this.apiUrl}/projects/${id}`, body)
+            .pipe(
+                map((value: any) => value)
+            );
+    }
+
     public getFile({id, path, name}: {id:number, path: string, name: string}): Observable<File> {
         return this.http.get(`${this.apiUrl}/projects/${id}/${path}/${name}`)
         .pipe(

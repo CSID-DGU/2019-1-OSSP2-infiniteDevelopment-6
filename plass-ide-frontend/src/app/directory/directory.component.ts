@@ -15,6 +15,13 @@ import { Router } from '@angular/router';
 export class DirectoryComponent implements OnInit {
     public createModal: boolean = false;
     public projects: Array<Project> = [];
+
+    public projectMenu: {
+        visible: boolean,
+        x?: number,
+        y?: number,
+        type?: string
+    } = { visible: false};
     
     constructor(private dataService: DataService,
         private router: Router) {}
@@ -35,7 +42,10 @@ export class DirectoryComponent implements OnInit {
         this.createModal = false;
     }
 
-    public selectProject($event, project) {
+    public selectProject($event: MouseEvent, project?: Project) {
+        $event.stopPropagation();
+        if(!project) { this.projects.forEach(value=>{value.select=false}); return };
+
         const selectedProjects = this.projects.filter((value) => {
             return value.select;
         });
@@ -75,5 +85,44 @@ export class DirectoryComponent implements OnInit {
         if($event.ctrlKey) ctrlSelect();
         else if($event.shiftKey) shiftSelect();
         else normalSelect();
+    }
+
+    public deleteProjects() {
+        const _confirm = confirm("정말로 삭제하시겠습니까?");
+        if(!_confirm) { return; };
+
+        const selectedProjects = this.projects.filter((value) => {
+            return value.select;
+        }); 
+
+        selectedProjects.forEach(project => {
+            this.dataService.deletProject({id: project.id}).subscribe(()=>{
+                this.projects = this.projects.filter((value) => value!==project);
+            }, error=>{alert("삭제 중 에러가 발생했습니다. 잠시 후 다시해주세요.");});
+        });
+    }
+
+    public openContextMenu($event: MouseEvent, project?: Project) {
+        $event.preventDefault();
+        $event.stopPropagation();
+
+        const { x, y } = $event;
+        this.projectMenu = { x, y, visible: true, type: project? "project" : null };
+
+        if(!project) { return; };
+
+        const selectedProjects = this.projects.filter((value) => {
+            return value.select;
+        });
+
+        if( selectedProjects.findIndex((value) => value === project) == -1 ) {
+            this.projects.forEach((value) => {value.select = false;});
+            project.select = true;
+        }
+    }
+
+    public disableContextMenu($event: MouseEvent) {
+        $event.preventDefault();
+        this.projectMenu.visible = false;
     }
 }
