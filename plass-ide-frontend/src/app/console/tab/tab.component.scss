@@ -3,8 +3,30 @@ article{
     flex-direction: column;
     height: 100%;
     .tabs-wrapper {
-        height: 25px;
         border-bottom: 1px solid #303030;
+        height: 25px;
+        .tab-list {
+            display: flex;
+            height: 100%;
+            overflow: hidden;
+            .tab {
+                display: flex;
+                width: 150px;
+                height: 100%;
+                cursor: pointer;
+                border-right: 1px solid #606060;
+                color: #c0c0c0;
+                p {
+                    align-self: center;
+                    line-height: 1;
+                    padding: 0 5px;
+                }
+            }
+            .tab.active {
+                background: #e0e0e0;
+                color: #303030;
+            }
+        }
     }
     .editor-wrapper{
         height: 100%;

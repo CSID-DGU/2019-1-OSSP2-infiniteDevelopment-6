@@ -1,8 +1,18 @@
 <article>
     <div class="tabs-wrapper">
-    
+        <ng-container *ngIf="files">
+            <ul class="tab-list">
+                <li class="tab" *ngFor="let file of files" 
+                    [ngClass]="{'active': file===selectFile}" (click)="clickFile(file)">
+                    <p>
+                        {{file.name}}
+                    </p>
+                </li>
+            </ul>
+        </ng-container>
     </div>
     <div class="editor-wrapper">
-        <div ace-editor class="editor" theme='eclipse' [(text)]="text"></div>
+        <div ace-editor class="editor" theme='eclipse' [(text)]="text" 
+            (textChanged)="changeEditor()"></div>
     </div>
 </article>

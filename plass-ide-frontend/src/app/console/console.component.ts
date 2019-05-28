@@ -1,11 +1,14 @@
 import {
     Component,
     OnInit,
-    ViewChild,
+    ViewChildren,
+    QueryList,
 } from '@angular/core';
 import { DataService } from '../data.service';
 import { ActivatedRoute } from '@angular/router';
 import { Project, File } from '../types';
+import { TabComponent } from './tab/tab.component';
+
 
 @Component({
     selector: 'app-console',
@@ -13,10 +16,10 @@ import { Project, File } from '../types';
     styleUrls: ['./console.component.scss'],
 })
 export class ConsoleComponent implements OnInit {
-    @ViewChild('editor') editor;
     project: Project;
     text: string = "";
-    tabs: Array<any> = [];
+
+    @ViewChildren("tabComponent") tabs:QueryList<TabComponent>;
 
     public constructor(
         private dataService: DataService,
@@ -38,12 +41,17 @@ export class ConsoleComponent implements OnInit {
         if(file.isDirectory) {
             return;
         }
-
+        
         const id = parseInt(this.route.snapshot.paramMap.get("id"));
-        const {path, name} = file;
-        this.dataService.getFile({id, path, name}).subscribe(value => {
-            file.data = value.data;
-            this.text = value.data;
-        });
+        const {path, name, data} = file;
+
+        if(!data) {
+            this.dataService.getFile({id, path, name}).subscribe(value => {
+                file.data = value.data;
+                this.text = value.data;
+            });
+        }
+        
+        this.tabs.toArray()[0].pushFile(file);
     }
 }

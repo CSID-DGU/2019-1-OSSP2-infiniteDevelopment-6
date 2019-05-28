@@ -37,6 +37,8 @@ export interface File {
     size?: number;
     files?: Array<File>;
     data?: string;
+    modify?: boolean;
+    isTemp?: boolean;
 }
 
 export interface Project {
