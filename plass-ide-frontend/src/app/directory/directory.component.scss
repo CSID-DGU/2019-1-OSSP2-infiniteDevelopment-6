@@ -6,9 +6,12 @@ section{
   .tooltip-wrapper {
     text-align: right;
   }
-  
   .directory-wrapper{
     ul {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+
       li {
         display: inline-block;
         cursor: pointer;
@@ -23,6 +26,18 @@ section{
           text-align: center;
         }
       }
+
+      list-element {
+        display: flex;
+        cursor: pointer;
+        align-self: flex-start;
+      }
+      list-element.project-selected {
+        background: rgba(0, 0, 255, 0.2);
+      }
     }
   }
+}
+* {
+  user-select: none;
 }

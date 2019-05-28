@@ -47,4 +47,5 @@ export interface Project {
     path: string;
     enabled: number;
     files?: Array<File>;
+    select?: boolean;
 }
