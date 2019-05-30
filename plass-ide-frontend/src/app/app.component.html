@@ -18,6 +18,12 @@
                 <li>
                     <a [routerLink]="'/problems'">문제리스트</a>
                 </li>
+                <li>
+                    <a [routerLink]="'/mypage'">마이페이지</a>
+                </li>
+                <li>
+                    <a (click)="signout()">로그아웃</a>
+                </li>
             </ul>
         </nav>
     </header>
