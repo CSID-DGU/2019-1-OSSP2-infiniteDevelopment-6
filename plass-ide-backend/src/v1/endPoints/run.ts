@@ -1,8 +1,9 @@
 import {ChildProcess, spawn} from "child_process";
-import * as crypto from "crypto";
 import * as express from "express";
-import * as fs from "fs";
-import * as path from "path";
+import * as crypto from "crypto";
+
+import { getUserPath  } from "../../helper/path-helper";
+import connection from "../../connection";
 
 const dockerInstance: {
     [key: string]: IDockerInstance;
@@ -20,26 +21,24 @@ interface IDockerOutput {
     closed: boolean;
 }
 
-const run = (req: express.Request, res: express.Response) => {
-    const sourcePath = path.join(__dirname, `../../../files/${req.user.userId}`);
+const run = async (req: express.Request, res: express.Response) => {
+    const id = parseInt(req.params.id, 10);
+    const { user } = req.user;
+    if(!id) { res.status(400).send("no projects"); return;}
 
-    if (!fs.existsSync(sourcePath)) {
-        fs.mkdirSync(sourcePath);
-    }
+    const [rows] = await connection.execute("SELECT * FROM projects WHERE id = ? AND user = ? AND enabled = true", [id, user.id]);
+    if(rows.length != 1) { res.status(400).send("no data"); return; }
+    const result = rows[0];
 
-    fs.writeFileSync(path.join(sourcePath, "Main.java"), req.body.source);
-
-    const hash = crypto.createHmac("sha256", "")
-        .update(req.body.source)
-        .digest("hex");
-
+    const sourcePath = getUserPath({...user, ...result});
+    console.log(sourcePath);
     const docker = spawn("docker", ["run", "--rm", "-v", `${sourcePath}:/src`, "java-build:1.0"]);
 
-    res
-        .status(201)
-        .json({
-            hash,
-        });
+    const hash = crypto.createHmac("sha256", "")
+        .update(new Date().toString())
+        .digest("hex"); // hash value for seperate result
+
+    res.status(201).json({ hash }); // send result hash
 
     dockerInstance[hash] = {
         process: docker,
@@ -48,6 +47,7 @@ const run = (req: express.Request, res: express.Response) => {
     };
 
     docker.stdout.on("data", (data) => {
+        console.log(data);
         dockerInstance[hash]
             .stdout
             .push({
@@ -68,6 +68,7 @@ const run = (req: express.Request, res: express.Response) => {
     });
 
     docker.stderr.on("data", (data) => {
+        console.log(data);
         dockerInstance[hash]
             .stderr
             .push({
@@ -92,48 +93,36 @@ const run = (req: express.Request, res: express.Response) => {
     });
 };
 
+
 const result = async (req: express.Request, res: express.Response) => {
     const hash = req.params.hash;
-    const isError = JSON.parse(req.query.is_error);
-    let index = req.query.index ? parseInt(req.query.index, 10) : -1;
-
     if (!dockerInstance[hash]) {
         res
             .status(404)
             .end();
         return;
     }
-
-    while (!((isError && dockerInstance[hash].stderr[index + 1]) ||
-        (!isError && dockerInstance[hash].stderr.length > 0) ||
-        (!isError && dockerInstance[hash].stdout[index + 1]))) {
-        await new Promise(resolve => {
-            setTimeout(resolve, 500);
-        });
-    }
-
-    if (!isError && dockerInstance[hash].stderr.length > 0) {
-        index = -1;
-    }
+    
+    console.log(dockerInstance[hash]);
 
     if (dockerInstance[hash].stderr.length > 0) {
         res
             .status(200)
             .json({
                 err: true,
-                data: dockerInstance[hash].stderr[index + 1].data,
-                index: index + 1,
-                closed: dockerInstance[hash].stderr[index + 1].closed,
+                data: dockerInstance[hash].stderr[0].data,
+                index: 0,
+                closed: dockerInstance[hash].stderr[0].closed,
             });
     } else {
-        console.log(index + 1, dockerInstance[hash].stdout[index + 1]);
+        console.log(0, dockerInstance[hash].stdout[0]);
         res
             .status(200)
             .json({
                 err: false,
-                data: dockerInstance[hash].stdout[index + 1].data,
-                index: index + 1,
-                closed: dockerInstance[hash].stdout[index + 1].closed,
+                data: dockerInstance[hash].stdout[0].data,
+                index: 0,
+                closed: dockerInstance[hash].stdout[0].closed,
             });
     }
 };

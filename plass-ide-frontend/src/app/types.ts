@@ -32,6 +32,7 @@ export interface AccordionEvent {
 export interface File {
     name: string;
     isDirectory: boolean;
+    open?: boolean;
     path: string;
     ext?: string;
     size?: number;
@@ -39,6 +40,7 @@ export interface File {
     data?: string;
     modify?: boolean;
     isTemp?: boolean;
+    isDelete?: boolean;
 }
 
 export interface Project {

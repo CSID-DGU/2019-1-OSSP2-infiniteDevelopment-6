@@ -1,0 +1,20 @@
+<div class="modal-wrapper" [ngClass]="modalOn ? 'modal-on' : 'modal-off'">
+    <div class="modal">
+        <div class="modal-header">
+            <h1>생성하기</h1>
+        </div>
+        <div class="modal-content">
+            <p>
+                <label for="name">이름</label>
+                <input [ngClass]="[nameError ? 'error' : '']"
+                    type="text" id="name" 
+                    [(ngModel)]="name" 
+                    (keyup)="handleName($event)">
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button (click)="create()">확인</button>
+            <button (click)="cancel()">취소</button>
+        </div>
+    </div>
+</div>

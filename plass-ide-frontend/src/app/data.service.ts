@@ -120,6 +120,13 @@ export class DataService {
             );
     }
 
+    public postProject(id:number, body: {filename: string, data: string, path: string, isDirectory: boolean}): Observable<Project> {
+        return this.http.post(`${this.apiUrl}/projects/${id}`, body)
+            .pipe(
+                map((value: any) => value)
+            );
+    }
+
     public putProject({id, body}: {id: number, body: any}): Observable<any> {
         return this.http.put(`${this.apiUrl}/projects/${id}`, body)
             .pipe(
@@ -132,6 +139,14 @@ export class DataService {
             .pipe(
                 map((value: any) => value)
             );
+    }
+
+    public putFile(id:number ,body: { name: string, path: string, data: string }): Observable<any> {
+        return this.http.put(`${this.apiUrl}/projects/${id}/${body.path}`, body);
+    }
+
+    public deleteFile(id:number , path: string): Observable<any> {
+        return this.http.delete(`${this.apiUrl}/projects/${id}/${path}`);
     }
 
     public getFile({id, path, name}: {id:number, path: string, name: string}): Observable<File> {

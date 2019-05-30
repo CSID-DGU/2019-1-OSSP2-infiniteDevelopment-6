@@ -70,19 +70,19 @@ const postProject = async function(req: express.Request, res: express.Response) 
     const id = parseInt(req.params.id, 10);
     const { user } = req.user;
     const { filename, data, path, isDirectory } = req.body;
-    if(!id) { res.status(400).send("id is not integer"); return; }
-    if(!filename || !data) { res.status(400).send("no data"); return; }
+    if(!id) { res.status(400).send({code: 0, msg:"id is not integer"}); return; }
+    if(!filename) { res.status(400).send({code: 1, msg:"no filename"}); return; }
 
     try {
         const [rows] = await connection.execute("SELECT * FROM projects WHERE id = ? AND user = ? AND enabled = true", [id, user.id]);
-        if(rows.length != 1) { res.status(400).send("no project data"); return; }
+        if(rows.length != 1) { res.status(400).send({code: 2, msg: "no project data"}); return; }
         const result = rows[0];
 
         const userpath = getUserPath({...user, ...result});
         const _filename = `${userpath}${path}/${filename}`;
 
         if(existsSync(_filename)) {
-            res.status(400).send("file is exists");
+            res.status(400).send({code: 3, msg: "file is exists"});
             return;
         } 
 
@@ -188,12 +188,12 @@ const putProjectFile = async function(req: express.Request, res: express.Respons
     const { data, name } = req.body;
 
     const { user } = req.user;
-    if(!id) { res.status(400).send("id is not integer"); return; }
-    if(!path) { res.status(400).send("no file path"); return; }
+    if(!id) { res.status(400).send({code: 0, msg: "id is not integer"}); return; }
+    if(!path) { res.status(400).send({code: 1, msg: "no file path"}); return; }
 
     try {
         const [rows] = await connection.execute("SELECT * FROM projects WHERE id = ? AND user = ? AND enabled = true", [id, user.id]);
-        if(rows.length != 1) { res.status(400).send("no project data"); return; }
+        if(rows.length != 1) { res.status(400).send({code:2, msg: "no project data"}); return; }
         const result = rows[0];
 
         const userpath = getUserPath({...user, ...result});
@@ -201,7 +201,7 @@ const putProjectFile = async function(req: express.Request, res: express.Respons
         
 
         if(!existsSync(_path)) {
-            res.status(400).send("no file");
+            res.status(400).send({code:3, msg: "no file"});
             return;
         }
         const state = statSync(_path);
@@ -214,7 +214,10 @@ const putProjectFile = async function(req: express.Request, res: express.Respons
         if(name) {
             const directoryPath = _path.substring(0, _path.lastIndexOf("/"));
             const newName = `${directoryPath}/${name}`;
-            console.log(newName)
+            if(existsSync(newName)) {
+                res.status(400).send({code:4, msg: "file exisist"});
+                return;
+            }
             renameSync(_path, newName);
         }
 
@@ -230,21 +233,22 @@ const deleteProjectFile = async function(req: express.Request, res: express.Resp
     const path = req.params[0];
 
     const { user } = req.user;
-    if(!id) { res.status(400).send("id is not integer"); return; }
-    if(!path) { res.status(400).send("no file path"); return; }
+    if(!id) { res.status(400).send({code:0 , msg: "id is not integer"}); return; }
+    if(!path) { res.status(400).send({code: 1, msg: "no file path"}); return; }
 
     try {
         const [rows] = await connection.execute("SELECT * FROM projects WHERE id = ? AND user = ? AND enabled = true", [id, user.id]);
-        if(rows.length != 1) { res.status(400).send("no project data"); return; }
+        if(rows.length != 1) { res.status(400).send({code: 2, msg: "no project data"}); return; }
         const result = rows[0];
 
         const userpath = getUserPath({...user, ...result});
         const _path = `${userpath}/${path}`;
 
         if(!existsSync(_path)) {
-            res.status(400).send("no file");
+            res.status(400).send({code: 3, msg: "no file"});
             return;
         }
+
         const state = statSync(_path);
         const isDirectory = state.isDirectory();
         

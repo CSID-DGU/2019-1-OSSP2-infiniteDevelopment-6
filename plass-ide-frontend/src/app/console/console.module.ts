@@ -3,6 +3,7 @@ import { SharedModule } from '../shared.module';
 // import { ConsoleRoutingModule } from './console-routing.module';
 import { ConsoleComponent } from './console.component';
 import { TabComponent } from './tab/tab.component';
+import { NamePopupComponent } from './namePopup/namePopup.component';
 
 @NgModule({
     imports: [
@@ -10,7 +11,7 @@ import { TabComponent } from './tab/tab.component';
         SharedModule,
     ],
     declarations: [
-        ConsoleComponent, TabComponent
+        ConsoleComponent, TabComponent, NamePopupComponent
     ],
     exports: [
         ConsoleComponent,

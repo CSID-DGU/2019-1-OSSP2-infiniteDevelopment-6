@@ -1,12 +1,15 @@
-<div class="ide-wrapper" *ngIf="project">
-    <aside class="file-navigator">
+<div class="ide-wrapper" *ngIf="project" (click)="disableContextMenu($event)">
+    <aside class="file-navigator" (contextmenu)="navContextMenu($event); openContextMenu($event)">
         <div class="file-wrapper">
             <h1>{{project.name}}</h1>
-            <ul>
+            <ul (contextmenu)="directoryContextMenu($event, null); openContextMenu($event)">
                 <ng-template #recursiveList let-list>
-                    <li *ngFor="let file of list">
-                        <p (click)="clickFile(file)" [ngClass]="{'modify': file.isTemp || file.modify}">{{file.name}}</p>
-                        <ul *ngIf="file.isDirectory && file.files.length > 0">
+                    <li *ngFor="let file of list" [ngClass]="{'delete': file.isDelete}" (contextmenu)="directoryContextMenu($event, file); openContextMenu($event)">
+                        <p (click)="clickFile(file)" [ngClass]="{'modify': file.isTemp || file.modify}">
+                            <span *ngIf="file.isDirectory">D</span>
+                            {{file.name}}
+                        </p>
+                        <ul *ngIf="file.isDirectory && file.open && file.files.length > 0">
                             <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: file.files }"></ng-container>
                         </ul>
                     </li>
@@ -24,3 +27,21 @@
         </div>
     </section>
 </div>
+
+
+<ng-container *ngIf="contextMenu.visible">
+    <div class="context-menu" [ngStyle]="{'top.px': contextMenu.y, 'left.px': contextMenu.x}">
+        <div class="menu-item" [ngClass]="{'disabled': !contextMenu.addFile}"
+            (click)="addFile(); disableContextMenu($event)">add file</div>
+
+        <div class="menu-item" [ngClass]="{'disabled': !contextMenu.addDirectory}"
+            (click)="addDirectory(); disableContextMenu($event)">add directory</div>
+
+            <div class="menu-item" [ngClass]="{'disabled': !contextMenu.rename}"
+            (click)="renameFile(); disableContextMenu($event)">rename</div>
+        <div class="menu-item" [ngClass]="{'disabled': !contextMenu.delete}"
+            (click)="deleteFile(); disableContextMenu($event)">delete</div>
+    </div>
+</ng-container>
+
+<modal-name [apply]="apply" (modalOff)="modalOff()" #nameModal></modal-name>
