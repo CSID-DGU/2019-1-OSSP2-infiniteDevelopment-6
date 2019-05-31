@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { DataService } from 'src/app/data.service';
 import { Problem } from 'src/app/types';
-import { ActivatedRoute } from '@angular/router';
+import { Router ,ActivatedRoute } from '@angular/router';
 import { newlineToBr } from '../../helper/escape-to-html';
 
 @Component({
@@ -18,7 +18,8 @@ export class DetailComponent implements OnInit {
 
     public constructor(
         private dataService: DataService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private router: Router
     ) {}
 
     public ngOnInit() {
@@ -26,12 +27,14 @@ export class DetailComponent implements OnInit {
 
         this.dataService.getProblem({id: id}).subscribe((value) => {
             this.problem = value;
-            console.log(value);
         });
     }
 
     public escapeString(str: string) {
-        console.log(newlineToBr(str))
         return newlineToBr(str);
+    }
+
+    public createProject() {
+        this.router.navigate(["/directory"], {queryParams: {problem_id: this.problem.id}});
     }
 }

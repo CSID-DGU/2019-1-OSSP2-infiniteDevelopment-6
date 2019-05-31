@@ -1,5 +1,18 @@
 <section>
     <article *ngIf="problem">
+        <nav>
+            <ul>
+                <li>
+                    <a class="active">{{problem.id}}번</a>
+                </li>
+                <li>
+                    <a (click)="createProject()">프로젝트 생성</a>
+                </li>
+                <li>
+                    <a>결과 보기</a>
+                </li>
+            </ul>
+        </nav>
         <h1>{{problem.id}}. {{problem.name}}</h1>
         <div class="problem-wrapper wrapper">
             <h2>문제</h2>

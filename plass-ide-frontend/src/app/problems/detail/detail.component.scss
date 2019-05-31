@@ -4,6 +4,36 @@ section {
     align-items: center;
     article {
         min-width: 1200px;
+        nav {
+            ul {
+                margin-bottom: 15px;
+                li{
+                    cursor: pointer;
+                    color: #303030;
+                    display: inline-block;
+                    padding: 0 10px;
+                    line-height: 2rem;
+                    font-size: 0.85rem;
+                    text-align: center;
+                    margin-right: 10px;
+                    a {
+                        color: inherit;
+                    }
+                }
+                li:hover {
+                    background: #5080c0;
+                    color: white;
+                }
+                li:active {
+                    background: #3350a0;
+                }
+                li.active{
+                    background: #3350a0;
+                    color: white;
+                }
+            }
+        }
+
         h1 {
             font-size: 2rem;
             font-weight: 600;
