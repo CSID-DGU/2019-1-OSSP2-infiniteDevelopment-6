@@ -12,12 +12,18 @@ import { IFile } from "../../types";
 
 const getProjects = async function(req: express.Request, res: express.Response) {
     const { user } = req.user;
-
+    const problem_id = req.query.problem_id;
 
     try {
-        const [rows] = await connection.execute("SELECT * FROM projects where user = ? AND enabled = true", [user.id]);
+        if(!problem_id) {
+            const [rows] = await connection.execute("SELECT * FROM projects where user = ? AND enabled = true", [user.id]);
+            res.json(rows);
+        } else {
+            const [rows] = await connection.execute("SELECT * FROM projects where user = ? AND enabled = true AND problem = ?", 
+                [user.id, problem_id]);
+            res.json(rows);
+        }
 
-        res.json(rows);
     } catch (e) {
         res.status(400).send();
     }
@@ -25,15 +31,21 @@ const getProjects = async function(req: express.Request, res: express.Response) 
 }
 
 const postProjects = async function(req: express.Request, res: express.Response) {
-    const { name, category } = req.body;
+    const { name, category, problem } = req.body;
     const { user } = req.user;
     if(!name || !category) { res.status(400).send(); return; }
     
     const path = crypto.createHash("md5").update(new Date().toString()).digest("hex").substring(0, 40);
 
     try {
-        const result = await connection.execute("INSERT INTO projects(name, category, user, path) VALUES (?, ?, ?, ?)", [name, category, user.id, path]);
-
+        let result = null;
+        if(!problem) {
+            result = await connection.execute("INSERT INTO projects(name, category, user, path) VALUES (?, ?, ?, ?)", [name, category, user.id, path]);
+        } else {
+            result = await connection.execute("INSERT INTO projects(name, category, user, path, problem) VALUES (?, ?, ?, ?, ?)", 
+                [name, category, user.id, path, problem]);
+        }
+        
         mkdirp.sync(getUserPath({...user, path}), {recursive: true});
 
         res.status(200).send({id: result[0].insertId});
