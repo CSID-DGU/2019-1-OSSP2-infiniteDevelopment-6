@@ -1,5 +1,6 @@
 import * as express from "express";
-import { mkdirSync, statSync, writeFileSync, existsSync, readFileSync, unlinkSync, renameSync } from "fs";
+import { statSync, writeFileSync, existsSync, readFileSync, unlinkSync, renameSync } from "fs";
+import * as mkdirp from "mkdirp";
 import * as rimraf from 'rimraf';
 import connection from "../../connection";
 import * as crypto from "crypto";
@@ -33,7 +34,7 @@ const postProjects = async function(req: express.Request, res: express.Response)
     try {
         const result = await connection.execute("INSERT INTO projects(name, category, user, path) VALUES (?, ?, ?, ?)", [name, category, user.id, path]);
 
-        mkdirSync(getUserPath({...user, path}));
+        mkdirp.sync(getUserPath({...user, path}), {recursive: true});
 
         res.status(200).send({id: result[0].insertId});
     } catch (e) {
@@ -87,7 +88,7 @@ const postProject = async function(req: express.Request, res: express.Response) 
         } 
 
         if(isDirectory) {
-            mkdirSync(_filename);
+            mkdirp.sync(_filename);
         } else {
             writeFileSync(_filename, data);
         }
