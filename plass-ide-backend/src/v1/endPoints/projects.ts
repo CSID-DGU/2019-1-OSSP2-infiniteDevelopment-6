@@ -80,7 +80,7 @@ const postProject = async function(req: express.Request, res: express.Response) 
         const result = rows[0];
 
         const userpath = getUserPath({...user, ...result});
-        const _filename = `${userpath}${path}/${filename}`;
+        const _filename = `${userpath}${path ? "/" + path : ""}/${filename}`;
 
         if(existsSync(_filename)) {
             res.status(400).send({code: 3, msg: "file is exists"});
@@ -90,6 +90,7 @@ const postProject = async function(req: express.Request, res: express.Response) 
         if(isDirectory) {
             mkdirp.sync(_filename);
         } else {
+            console.log(_filename);
             writeFileSync(_filename, data);
         }
 
