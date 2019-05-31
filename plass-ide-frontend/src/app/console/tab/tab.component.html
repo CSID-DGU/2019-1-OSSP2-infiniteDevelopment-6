@@ -14,5 +14,6 @@
     <div class="editor-wrapper">
         <div ace-editor class="editor" theme='eclipse' [(text)]="this.selectFile ? this.selectFile.data : text" 
             (textChanged)="changeEditor($event)"></div>
+        <ng-content></ng-content>
     </div>
 </article>
