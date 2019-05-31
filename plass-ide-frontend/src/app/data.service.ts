@@ -84,7 +84,7 @@ export class DataService {
     }
 
     public getProblems({page=0, unit=10}: {page: number, unit?: number}): Observable<Array<Problem>> {
-        return this.http.get(`${this.apiUrl}/problems?page=${page}&unit=${unit}`)
+        return this.http.get(`${this.apiUrl}/problems${objectSerializer({page, unit})}`)
             .pipe(
                 map((value: any) => value.problems),
                 catchError(error => this.handleError(error))
@@ -99,8 +99,8 @@ export class DataService {
             );
     }
 
-    public getProjects(): Observable<Array<Project>> {
-        return this.http.get(`${this.apiUrl}/projects`)
+    public getProjects(queryParams?: any): Observable<Array<Project>> {
+        return this.http.get(`${this.apiUrl}/projects${objectSerializer(queryParams)}`)
             .pipe(
                 map((value: any) => value)
             );
@@ -156,3 +156,15 @@ export class DataService {
         )
     }
 }
+
+
+function objectSerializer (obj) {
+    if (!obj) return "";
+    return Object.keys(obj).reduce(function (str, key, i) {
+        let delimiter, val;
+        delimiter = (i === 0) ? '?' : '&';
+        key = encodeURIComponent(key);
+        val = encodeURIComponent(obj[key]);
+        return [str, delimiter, key, '=', val].join('');
+    }, '');
+  }
