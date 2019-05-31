@@ -20,6 +20,9 @@
                     <option value="c">C Language</option>
                 </select>
             </p>
+            <ng-container *ngIf="problem">
+                <p>문제: {{problem.name}}</p>
+            </ng-container>
         </div>
         <div class="modal-footer">
             <button (click)="create()">확인</button>

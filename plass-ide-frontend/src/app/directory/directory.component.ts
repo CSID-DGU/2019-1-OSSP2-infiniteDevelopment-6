@@ -1,11 +1,14 @@
 import {
     Component,
-    OnInit
+    OnInit,
+    ViewChild
 } from '@angular/core';;
 
 import { Project } from '../types';
 import { DataService } from '../data.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { CreatePopupComponent } from './createPopup/createPopup.component';
+
 
 @Component({
     selector: 'app-directory',
@@ -13,10 +16,10 @@ import { Router } from '@angular/router';
     styleUrls: ['./directory.component.scss'],
 })
 export class DirectoryComponent implements OnInit {
-    public createModal: boolean = false;
-    public projects: Array<Project> = [];
+    @ViewChild("createModal") createModal: CreatePopupComponent;
+    projects: Array<Project> = [];
 
-    public projectMenu: {
+    projectMenu: {
         visible: boolean,
         x?: number,
         y?: number,
@@ -24,7 +27,8 @@ export class DirectoryComponent implements OnInit {
     } = { visible: false};
     
     constructor(private dataService: DataService,
-        private router: Router) {}
+        private router: Router,
+        private route: ActivatedRoute) {}
 
     public ngOnInit() {
         this.dataService.getProjects().subscribe(projects => {
@@ -32,14 +36,33 @@ export class DirectoryComponent implements OnInit {
         }, error => {
             alert("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
         });
+        
+        const problem_id = this.route.snapshot.queryParams.problem_id;
+
+        if(problem_id) {
+            this.dataService.getProjects({problem_id}).subscribe(projects => {
+                if(projects.length === 0) {
+                    this.dataService.getProblem({id: problem_id}).subscribe((problem)=> {
+                        this.createModal.modalOn = true;
+                        this.createModal.problem = problem;
+                    }, (error) => { console.log(error) });
+                } else {
+                    this.router.navigate(["/console", projects[0].id]);
+                }
+            }, error => {console.log()});
+        }
+
+
+        this.dataService.getProjects()
     }
     
     public openCreatePopup() {
-        this.createModal = true;
+        this.createModal.modalOn = true;
+        this.createModal.problem = null;
     }
 
     public closeModal($event) {
-        this.createModal = false;
+        this.createModal.modalOn = true;
     }
 
     public selectProject($event: MouseEvent, project?: Project) {

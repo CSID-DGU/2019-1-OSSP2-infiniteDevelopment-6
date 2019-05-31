@@ -19,7 +19,7 @@
         </ng-container>
     </div>
 </section>
-<app-createPopup [modalOn]="createModal" (modalOff)="closeModal($event)"></app-createPopup>
+<app-createPopup #createModal></app-createPopup>
 
 <ng-container *ngIf="projectMenu.visible">
     <div class="context-menu" [ngStyle]="{'top.px': projectMenu.y, 'left.px': projectMenu.x}">

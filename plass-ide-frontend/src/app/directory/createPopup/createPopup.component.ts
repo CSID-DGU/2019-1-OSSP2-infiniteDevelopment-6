@@ -6,6 +6,7 @@ import {
 } from '@angular/core';import { shiftInitState } from '@angular/core/src/view';
 import { DataService } from 'src/app/data.service';
 import { Router } from '@angular/router';
+import { Problem } from 'src/app/types';
 
 
 @Component({
@@ -14,13 +15,13 @@ import { Router } from '@angular/router';
     styleUrls: ['./createPopup.component.scss'],
 })
 export class CreatePopupComponent {
-    @Input() modalOn: boolean = false;
-    @Output() modalOff: EventEmitter<Boolean> = new EventEmitter<Boolean>();
-
+    modalOn: boolean = false;
     projectName: string = "";
     projectType: string = "";
     nameError: boolean = false;
     typeError: boolean = false;
+
+    problem: Problem;
 
     doubleSubmit: boolean = false;
     
@@ -44,6 +45,8 @@ export class CreatePopupComponent {
             category: this.projectType
         };
 
+        if(this.problem) body["problem"] = this.problem.id;
+
         this.dataService.postProjects({body}).subscribe(value => {
             this.router.navigateByUrl(`console/${value.id}`);
         });
@@ -66,10 +69,5 @@ export class CreatePopupComponent {
         }
         
         return isValid;
-    }
-
-    public cancel() {
-        this.modalOn = false;
-        this.modalOff.emit(false);
     }
 }
