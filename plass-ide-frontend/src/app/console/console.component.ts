@@ -278,6 +278,40 @@ export class ConsoleComponent implements OnInit {
         });
     }
 
+    uploadFile = (file, data, isTemp, cb, errcb)  => {
+        const path = getPath(file);
+        file.data = data;
+        
+        this.dataService.putFile(this.project.id,{
+            data: data,
+            path: file.isDirectory ? path : path + "/" + file.name,
+        }).subscribe(value => {
+            file.modify = false;
+            if(typeof cb === "function") { cb(value); }
+        }, error => {
+            switch(error.error.code) {
+                case 0:
+                    alert("프로젝트가 옳바르지 않습니다.");
+                    break;
+                case 1:
+                    alert("파일이 존재하지 않습니다.");
+                    break;
+                case 2:
+                    alert("프로젝트가 옳바르지 않습니다.");
+                    break;
+                case 3:
+                    alert("파일이 존재하지 않습니다.");
+                    break;
+                case 4:
+                    alert("파일 이름이 존재합니다.");
+                    break;
+                default: 
+                    alert("잠시 후 다시 시도해주세요.");
+            }
+            if(typeof errcb === "function") { errcb(); }
+        });
+    }
+
     modalOff($event) {
         this.nameModal.modalOn = false;
     }

@@ -141,7 +141,7 @@ export class DataService {
             );
     }
 
-    public putFile(id:number ,body: { name: string, path: string, data: string }): Observable<any> {
+    public putFile(id:number ,body: { name?: string, path: string, data: string }): Observable<any> {
         return this.http.put(`${this.apiUrl}/projects/${id}/${body.path}`, body);
     }
 

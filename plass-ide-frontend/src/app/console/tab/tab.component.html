@@ -15,7 +15,7 @@
         <div ace-editor class="editor" theme='eclipse' [(text)]="text" 
             (textChanged)="changeEditor($event)"></div>
             <div class="toolbox-wrapper">
-                <button>save</button>
+                <button (click)="uploadFile($event)">save</button>
                 <button>compile</button>
             </div>
     </div>
