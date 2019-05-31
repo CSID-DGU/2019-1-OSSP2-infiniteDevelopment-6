@@ -282,34 +282,83 @@ export class ConsoleComponent implements OnInit {
         const path = getPath(file);
         file.data = data;
         
-        this.dataService.putFile(this.project.id,{
-            data: data,
-            path: file.isDirectory ? path : path + "/" + file.name,
-        }).subscribe(value => {
-            file.modify = false;
-            if(typeof cb === "function") { cb(value); }
-        }, error => {
-            switch(error.error.code) {
-                case 0:
-                    alert("프로젝트가 옳바르지 않습니다.");
-                    break;
-                case 1:
-                    alert("파일이 존재하지 않습니다.");
-                    break;
-                case 2:
-                    alert("프로젝트가 옳바르지 않습니다.");
-                    break;
-                case 3:
-                    alert("파일이 존재하지 않습니다.");
-                    break;
-                case 4:
-                    alert("파일 이름이 존재합니다.");
-                    break;
-                default: 
-                    alert("잠시 후 다시 시도해주세요.");
+        if(isTemp) {
+            this.nameModal.modalOn = true;
+            this.nameModal.pathMode = true;
+
+            this.apply = (body, cb, errcb) => {
+                file["name"] = body.filename;
+                file["data"] = data;
+                file["path"] = body.path ? `${body.path.path}/${body.path.name}` : "";
+                file["isDirectory"] = false;
+                console.log(file);
+
+                this.dataService.postProject(this.project.id, {
+                    filename: file.name,
+                    path: file.path,
+                    data,
+                    isDirectory: false
+                }).subscribe(value=>{
+                    if(!body.path) {
+                        this.project.files.push(file);
+                    } else {
+                        console.log(body);
+                        body.path.files.push(file);
+                    }
+                    if(typeof cb === "function") { cb(value); }
+                }, error => {
+                    switch(error.error.code) {
+                        case 0:
+                            alert("프로젝트가 옳바르지 않습니다.");
+                            break;
+                        case 1:
+                            alert("파일 이름이 존재하지 않습니다.");
+                            break;
+                        case 1:
+                            alert("프로젝트가 옳바르지 않습니다.");
+                            break;
+                        case 2:
+                            alert("파일이 이미 존재합니다.");
+                            break;
+                        case 3:
+                            alert("파일 생성에 실패했습니다. 잠시 후 다시 시도해주세요.");
+                            break;
+                        default: 
+                            alert("잠시 후 다시 시도해주세요.");
+                    }
+                    if(typeof errcb === "function") { errcb(); }
+                })
             }
-            if(typeof errcb === "function") { errcb(); }
-        });
+        } else {
+            this.dataService.putFile(this.project.id,{
+                data: data,
+                path: file.isDirectory ? path : path + "/" + file.name,
+            }).subscribe(value => {
+                file.modify = false;
+                if(typeof cb === "function") { cb(value); }
+            }, error => {
+                switch(error.error.code) {
+                    case 0:
+                        alert("프로젝트가 옳바르지 않습니다.");
+                        break;
+                    case 1:
+                        alert("파일이 존재하지 않습니다.");
+                        break;
+                    case 2:
+                        alert("프로젝트가 옳바르지 않습니다.");
+                        break;
+                    case 3:
+                        alert("파일이 존재하지 않습니다.");
+                        break;
+                    case 4:
+                        alert("파일 이름이 존재합니다.");
+                        break;
+                    default: 
+                        alert("잠시 후 다시 시도해주세요.");
+                }
+                if(typeof errcb === "function") { errcb(); }
+            });
+        }
     }
 
     modalOff($event) {

@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import { DataService } from 'src/app/data.service';
 import { Router } from '@angular/router';
+import { Project } from 'src/app/types';
 
 
 @Component({
@@ -16,9 +17,13 @@ import { Router } from '@angular/router';
 export class NamePopupComponent {
     @Input() modalOn: boolean = false;
     @Input() apply;
+    @Input() project: Project;
+
     @Output() modalOff: EventEmitter<Boolean> = new EventEmitter<Boolean>();
 
-    name: string = "";
+    name: string = "";b
+    path: File = null;
+    pathMode: boolean = false;
     nameError: boolean = false;
 
     doubleSubmit: boolean = false;
@@ -29,7 +34,7 @@ export class NamePopupComponent {
     public handleName(e) {
         this.name = e.target.value;
     }
-
+    
     public create() {
         if(!this.validation()) { this.doubleSubmit = false; return; }
         this.doubleSubmit = true;
@@ -37,10 +42,12 @@ export class NamePopupComponent {
         // TODO : send data
         const body = {
             filename: this.name,
+            path: this.pathMode ? this.path : null
         };
 
         this.apply(body, ()=> {
             this.name = "";
+            this.pathMode = false;
             this.doubleSubmit = false;
         }, () => {
             this.modalOn = true;

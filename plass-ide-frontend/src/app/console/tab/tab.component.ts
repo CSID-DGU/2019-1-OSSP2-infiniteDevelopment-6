@@ -16,6 +16,7 @@ export class TabComponent {
     public selectFile:File = null;
     public isFileChange: boolean = false;
     public text:string = "";
+    public newCount:number = 0;
 
     pushFile(file:File) {
         if(this.files.findIndex((value)=>(file === value)) !== -1) { this.selectFile = file; return; } // if files aready exsist
@@ -49,6 +50,19 @@ export class TabComponent {
             this.files.push(tempFile)
             this.selectFile = tempFile;
         }
+    }
+
+    createNewFile($event) {
+        const tempFile: File = {
+            name: "undefined " + (this.newCount++),
+            isDirectory: false,
+            path: "",
+            data: "",
+            isTemp: true,
+            modify: true
+        }
+        this.files.push(tempFile)
+        this.clickFile(tempFile);
     }
 
     uploadFile($event) {

@@ -29,6 +29,15 @@ article{
                 background: #e0e0e0;
                 color: #303030;
             }
+            .tab.new-tab {
+                text-align: center;
+                width: 25px;
+                justify-content: center;
+                color: #303030;
+                p {
+                    text-align: center;
+                }
+            }
         }
     }
     .editor-wrapper{
