@@ -12,8 +12,11 @@
         </ng-container>
     </div>
     <div class="editor-wrapper">
-        <div ace-editor class="editor" theme='eclipse' [(text)]="this.selectFile ? this.selectFile.data : text" 
+        <div ace-editor class="editor" theme='eclipse' [(text)]="text" 
             (textChanged)="changeEditor($event)"></div>
-        <ng-content></ng-content>
+            <div class="toolbox-wrapper">
+                <button>save</button>
+                <button>compile</button>
+            </div>
     </div>
 </article>

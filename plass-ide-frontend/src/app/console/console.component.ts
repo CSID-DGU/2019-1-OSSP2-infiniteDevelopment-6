@@ -74,6 +74,7 @@ export class ConsoleComponent implements OnInit {
         }
         
         this.tabs.toArray()[0].pushFile(file);
+        this.tabs.toArray()[0].clickFile(file);
     }
 
     openContextMenu($event: MouseEvent) {

@@ -25,13 +25,16 @@ export class TabComponent {
 
     clickFile(file: File) {
         this.selectFile = file;
+        this.text = file.data;
+        console.log(file);
         this.isFileChange = true;
     }
 
     changeEditor($event) {
+        if(this.isFileChange) {this.isFileChange = false; return;}
         if(this.selectFile) {
             // TODO: bug fix: a file change to modify state when change file
-            if(this.isFileChange) { this.isFileChange = false; return };
+            this.selectFile.data = this.text;
             this.selectFile.modify = true; 
         } else {
             const tempFile: File = {
