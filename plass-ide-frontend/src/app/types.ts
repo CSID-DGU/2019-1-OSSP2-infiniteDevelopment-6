@@ -52,4 +52,5 @@ export interface Project {
     enabled: number;
     files?: Array<File>;
     select?: boolean;
+    problem?: number;
 }

@@ -36,9 +36,13 @@
       }
     }
   }
+  aside-problem{
+    flex: 1;
+    border-right: 1px solid #303030;
+  }
   section {
     display: flex;
-    width: 100%;
+    flex:1;
     flex-direction: column;
     .editor-wrapper {
       display: flex;

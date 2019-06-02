@@ -4,6 +4,7 @@ import { SharedModule } from '../shared.module';
 import { ConsoleComponent } from './console.component';
 import { TabComponent } from './tab/tab.component';
 import { NamePopupComponent } from './namePopup/namePopup.component';
+import { AsideProblemComponent } from './problem/problem.component';
 
 @NgModule({
     imports: [
@@ -11,7 +12,7 @@ import { NamePopupComponent } from './namePopup/namePopup.component';
         SharedModule,
     ],
     declarations: [
-        ConsoleComponent, TabComponent, NamePopupComponent
+        ConsoleComponent, TabComponent, NamePopupComponent, AsideProblemComponent
     ],
     exports: [
         ConsoleComponent,
