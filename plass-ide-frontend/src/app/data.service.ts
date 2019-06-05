@@ -47,7 +47,10 @@ export class DataService {
     public verify() {
         return this.http.get(`${this.apiUrl}/verify`)
             .pipe(
-                map(() => true),
+                map((value) => {
+                    localStorage.setItem("logged_in", JSON.stringify(value));
+                    return true;
+                }),
                 catchError(error => this.handleError(error)),
             );
     }
