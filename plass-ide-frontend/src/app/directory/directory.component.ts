@@ -52,6 +52,7 @@ export class DirectoryComponent implements OnInit {
                     this.router.navigate(["/console", projects[0].id]);
                 }
             }, error => {console.log()});
+            this.router.navigate(['.'], {relativeTo: this.route});
         }
 
 
