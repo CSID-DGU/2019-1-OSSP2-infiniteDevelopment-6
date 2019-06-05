@@ -7,6 +7,21 @@ section{
     text-align: right;
   }
   .directory-wrapper{
+    .container {
+      h1 {
+        text-align: left;
+        font-size: 24px;
+        font-weight: 600;
+        margin: 10px;
+      }
+    }
+    .project-container {
+      padding-bottom: 120px;
+    }
+    .problem-container {
+      padding-top: 50px;
+      border-top: 1px solid #303030;
+    }
     ul {
       width: 100%;
       display: flex;

@@ -18,6 +18,7 @@ import { CreatePopupComponent } from './createPopup/createPopup.component';
 export class DirectoryComponent implements OnInit {
     @ViewChild("createModal") createModal: CreatePopupComponent;
     projects: Array<Project> = [];
+    projectsWithProblem: Array<Project> = [];
 
     projectMenu: {
         visible: boolean,
@@ -32,7 +33,8 @@ export class DirectoryComponent implements OnInit {
 
     public ngOnInit() {
         this.dataService.getProjects().subscribe(projects => {
-            this.projects = projects;
+            this.projects = projects.filter(value=>!value.problem);
+            this.projectsWithProblem = projects.filter(value=>value.problem);
         }, error => {
             alert("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
         });
