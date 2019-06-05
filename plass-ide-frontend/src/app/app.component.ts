@@ -10,16 +10,14 @@ import { DataService } from './data.service';
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit{
-    isLoggedIn: boolean = false;
+    isLoggedIn: string|null = null;
 
     constructor(
         private dataService: DataService
     ) {};
 
     public ngOnInit() {
-        this.dataService.verify().subscribe((value) => {
-            this.isLoggedIn = value;
-        });
+        this.isLoggedIn = localStorage.getItem("logged_in");
     }
     public signup() {
         alert("회원가입은 관리자를 통해 문의하세요.");

@@ -13,7 +13,7 @@ import { DataService } from '../data.service';
 })
 
 export class MainComponent implements OnInit{
-    isLoggedIn: boolean = false;
+    isLoggedIn: string | null = null;
 
     public constructor(
         private router: Router,
@@ -21,9 +21,7 @@ export class MainComponent implements OnInit{
     ) {}
     
     public ngOnInit() {
-        this.dataService.verify().subscribe((value) => {
-            this.isLoggedIn = value;
-        });
+        this.isLoggedIn = localStorage.getItem("logged_in");
     }
 
     public async onClickGetStart() {

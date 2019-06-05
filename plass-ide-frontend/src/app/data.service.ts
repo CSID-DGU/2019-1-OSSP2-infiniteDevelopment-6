@@ -29,6 +29,7 @@ export class DataService {
     }
 
     private handleError(error: any) {
+        localStorage.removeItem("logged_in");
         if (error.status === 401) {
             this.router.navigateByUrl('/login');
             return throwError(false);
