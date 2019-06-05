@@ -70,4 +70,8 @@ export class CreatePopupComponent {
         
         return isValid;
     }
+
+    public cancel() {
+        this.modalOn = false;
+    }
 }
