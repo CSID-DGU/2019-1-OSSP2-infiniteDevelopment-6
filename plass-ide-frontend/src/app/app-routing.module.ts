@@ -10,6 +10,7 @@ import { MainComponent } from './main/main.component';
 import { DirectoryComponent } from './directory/directory.component';
 import { ProblemsComponent } from './problems/problems.component';
 import { DetailComponent } from './problems/detail/detail.component';
+import { MyPageComponent } from './mypage/mypage.component';
 
 const routes: Routes = [
     { path: '', component: MainComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
     { path: 'console/:id', component: ConsoleComponent, canActivate: [CanActivateGuard] },
     { path: 'problems', component: ProblemsComponent},
     { path: 'problems/:id', component: DetailComponent},
+    { path: 'mypage', component: MyPageComponent },
     { path: '**', redirectTo: '' },
 ];
 
