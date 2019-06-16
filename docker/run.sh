@@ -1,3 +1,7 @@
-javac /src/Main.java -d /tmp
-cd /tmp
-java Main
+#!/bin/bash
+cd src
+ant clean
+ant compile
+ant jar
+
+java -jar /src/bin/jar/Main.jar

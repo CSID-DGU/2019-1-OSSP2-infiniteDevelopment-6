@@ -12,12 +12,11 @@ const dockerInstance: {
 interface IDockerInstance {
     process: ChildProcess;
     stdout: IDockerOutput[];
-    stderr: IDockerOutput[];
 }
 
 interface IDockerOutput {
     data: string;
-    index: number;
+    error: boolean;
     closed: boolean;
 }
 
@@ -31,8 +30,17 @@ const run = async (req: express.Request, res: express.Response) => {
     const result = rows[0];
 
     const sourcePath = getUserPath({...user, ...result});
-    console.log(sourcePath);
-    const docker = spawn("docker", ["run", "--rm", "-v", `${sourcePath}:/src`, "java-build:1.0"]);
+    
+    let docker = null;
+
+    switch(result.category) {
+        case "java":
+            docker = spawn("docker", ["run", "--rm", "-v", `${sourcePath}:/src`, "java-build:1.0"]);
+            break;
+        case "c":
+            docker = spawn("docker", ["run", "--rm", "-v", `${sourcePath}:/src`, "c-build:1.0"]);
+            break;
+    }
 
     const hash = crypto.createHmac("sha256", "")
         .update(new Date().toString())
@@ -42,92 +50,75 @@ const run = async (req: express.Request, res: express.Response) => {
 
     dockerInstance[hash] = {
         process: docker,
-        stdout: [],
-        stderr: [],
+        stdout: []
     };
 
     docker.stdout.on("data", (data) => {
-        console.log(data);
-        dockerInstance[hash]
-            .stdout
-            .push({
+        dockerInstance[hash].stdout.unshift({
                 data: data.toString(),
-                index: dockerInstance[hash].stdout.length,
                 closed: false,
+                error: false
             });
     });
 
     docker.stdout.on("end", () => {
-        dockerInstance[hash]
-            .stdout
-            .push({
-                data: "",
-                index: dockerInstance[hash].stdout.length,
-                closed: true,
-            });
+        dockerInstance[hash].stdout.unshift({
+            data: "",
+            closed: true,
+            error: false
+        });
     });
 
     docker.stderr.on("data", (data) => {
-        console.log(data);
-        dockerInstance[hash]
-            .stderr
-            .push({
-                data: data.toString(),
-                index: dockerInstance[hash].stderr.length,
-                closed: false,
-            });
+        dockerInstance[hash].stdout.unshift({
+            data: data.toString(),
+            closed: false,
+            error: false
+        });
     });
 
     docker.stderr.on("end", () => {
-        if (dockerInstance[hash].stderr.length === 0) {
+        if (dockerInstance[hash].stdout.length === 0) {
             return;
         }
 
-        dockerInstance[hash]
-            .stderr
-            .push({
-                data: "",
-                index: dockerInstance[hash].stderr.length,
-                closed: true,
-            });
+        dockerInstance[hash].stdout.unshift({
+            data: "",
+            closed: true,
+            error: false
+        });
     });
 };
 
+const input = async (req: express.Request, res: express.Response) => {
+
+};
 
 const result = async (req: express.Request, res: express.Response) => {
     const hash = req.params.hash;
     if (!dockerInstance[hash]) {
-        res
-            .status(404)
-            .end();
+        res.status(404).end();
         return;
     }
-    
-    console.log(dockerInstance[hash]);
 
-    if (dockerInstance[hash].stderr.length > 0) {
-        res
-            .status(200)
-            .json({
-                err: true,
-                data: dockerInstance[hash].stderr[0].data,
-                index: 0,
-                closed: dockerInstance[hash].stderr[0].closed,
-            });
-    } else {
-        console.log(0, dockerInstance[hash].stdout[0]);
-        res
-            .status(200)
-            .json({
-                err: false,
-                data: dockerInstance[hash].stdout[0].data,
-                index: 0,
-                closed: dockerInstance[hash].stdout[0].closed,
-            });
-    }
+    if(dockerInstance[hash].stdout.length > 0) {
+        const result = dockerInstance[hash].stdout.pop();
+
+        res.status(200).json({
+            error: result.error,
+            data: result.data,
+            closed: result.closed,
+        });
+        return;
+    } 
+
+    res.status(200).json({
+        wait: true
+    });
 };
 
 export const runEndPoint = {
     run,
-    result,
+    input,
+    result
 };
