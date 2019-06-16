@@ -1,6 +1,7 @@
 import * as express from "express";
 import { statSync, writeFileSync, existsSync, readFileSync, unlinkSync, renameSync } from "fs";
 import * as mkdirp from "mkdirp";
+import { ncp } from "ncp";
 import * as rimraf from 'rimraf';
 import connection from "../../connection";
 import * as crypto from "crypto";
@@ -8,6 +9,8 @@ import * as crypto from "crypto";
 import { getUserPath, getFiles } from '../../helper/path-helper';
 
 import { IFile } from "../../types";
+
+import { JAVA_PATH, C_PATH } from "../../boilerplate";
 
 
 const getProjects = async function(req: express.Request, res: express.Response) {
@@ -38,6 +41,21 @@ const postProjects = async function(req: express.Request, res: express.Response)
     const path = crypto.createHash("md5").update(new Date().toString()).digest("hex").substring(0, 40);
 
     try {
+        const userpath = getUserPath({...user, path})
+
+        mkdirp.sync(userpath, {recursive: true});
+        
+        switch(category) {
+            case "java":
+                ncp.ncp(JAVA_PATH, userpath);
+                break;
+            case "c":
+                ncp.ncp(C_PATH, userpath);
+                break;
+            default:
+                break;
+        }
+
         let result = null;
         if(!problem) {
             result = await connection.execute("INSERT INTO projects(name, category, user, path) VALUES (?, ?, ?, ?)", [name, category, user.id, path]);
@@ -45,8 +63,6 @@ const postProjects = async function(req: express.Request, res: express.Response)
             result = await connection.execute("INSERT INTO projects(name, category, user, path, problem) VALUES (?, ?, ?, ?, ?)", 
                 [name, category, user.id, path, problem]);
         }
-        
-        mkdirp.sync(getUserPath({...user, path}), {recursive: true});
 
         res.status(200).send({id: result[0].insertId});
     } catch (e) {
