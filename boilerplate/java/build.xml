@@ -5,7 +5,7 @@
 	
 	<target name="compile">
 		<mkdir dir="bin/classes"/>
-		<javac target="1.8" srcdir="src" destdir="bin/classes"/>
+		<javac srcdir="src" destdir="bin/classes"/>
 	</target>
 
 	<target name="jar">
