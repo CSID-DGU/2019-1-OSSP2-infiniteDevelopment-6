@@ -35,10 +35,10 @@ const run = async (req: express.Request, res: express.Response) => {
 
     switch(result.category) {
         case "java":
-            docker = spawn("docker", ["run", "--rm", "-v", `${sourcePath}:/src`, "java-build:1.0"]);
+            docker = spawn("docker", ["run", "--rm", "-i", "-v", `${sourcePath}:/src`, "java-build:1.0"]);
             break;
         case "c":
-            docker = spawn("docker", ["run", "--rm", "-v", `${sourcePath}:/src`, "c-build:1.0"]);
+            docker = spawn("docker", ["run", "--rm", "-i", "-v", `${sourcePath}:/src`, "c-build:1.0"]);
             break;
     }
 
@@ -91,7 +91,19 @@ const run = async (req: express.Request, res: express.Response) => {
 };
 
 const input = async (req: express.Request, res: express.Response) => {
+    const { hash } = req.params;
+    const { data }= req.body;
 
+    if (!dockerInstance[hash]) {
+        res.status(404).end();
+        return;
+    }
+    
+    dockerInstance[hash].process.stdin.write(data, ()=> {
+        dockerInstance[hash].process.stdin.end();
+    });
+ 
+    res.status(200).json({});
 };
 
 const result = async (req: express.Request, res: express.Response) => {
