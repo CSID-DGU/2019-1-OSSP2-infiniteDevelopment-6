@@ -12,6 +12,7 @@ import { File } from 'src/app/types';
 
 export class TabComponent {
     @Input() upload = (file: File, data: string, isTemp: boolean, cb, errcb) => {};
+    @Input() compile = () => {};
     public files:Array<File> = [];
     public selectFile:File = null;
     public isFileChange: boolean = false;
@@ -74,5 +75,9 @@ export class TabComponent {
         } else {
             this.upload(this.selectFile, this.text, false, ()=>{}, ()=>{});
         }
+    }
+
+    compileProject(event) {
+        this.compile();
     }
 }

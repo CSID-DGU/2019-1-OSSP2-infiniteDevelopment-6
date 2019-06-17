@@ -20,6 +20,8 @@ export class ConsoleComponent implements OnInit {
     project: Project;
     problem: Problem;
     text: string = "";
+    resultConsole: string = "";
+    resultHash: string = null;
     @ViewChild("nameModal") nameModal;
     apply = (body, cb, errcb) => {};
     select: File;
@@ -360,6 +362,41 @@ export class ConsoleComponent implements OnInit {
                 if(typeof errcb === "function") { errcb(); }
             });
         }
+    }
+
+    compileProject = () => {
+        if(!confirm("컴파일 하시겠습니까?")) { return; }
+        this.resultConsole = "";
+        this.dataService.run(this.project.id).subscribe((value) => {
+            this.resultHash = value.hash;
+            this.callResult();
+        });
+    }
+
+    callResult() {
+        if (!this.resultHash) return;
+
+        this.dataService.result(this.resultHash).subscribe((result) => {
+            if(result["wait"]) {
+                setTimeout(() => {
+                    this.callResult();
+                }, 1000);
+                return;
+            }
+
+            if(result.closed)  { this.resultHash = null; return; }
+            this.resultConsole += result.data;
+            this.callResult();
+        });
+    }
+
+    consoleInput($event) {
+        if(!this.resultHash) { return; }
+        if($event.key!="Enter") { return; }
+
+        const value = $event.target.value;
+        this.dataService.input(this.resultHash, value).subscribe(() => {});
+        $event.target.value = "";
     }
 
     modalOff($event) {
