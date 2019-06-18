@@ -6,7 +6,6 @@ import {
     OnInit
 } from '@angular/core';
 import { Project } from 'src/app/types';
-import { projection } from '@angular/core/src/render3';
 import { DataService } from 'src/app/data.service';
 import { Router } from '@angular/router';
 
