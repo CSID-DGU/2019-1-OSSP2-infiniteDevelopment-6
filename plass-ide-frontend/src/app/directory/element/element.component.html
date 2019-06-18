@@ -1,8 +1,8 @@
 <li (click)="clickProject()">
-    <div class="directory-img"></div>
+    <div class="directory-img {{project.category}}"></div>
     <div class="name-wrapper">
         <p *ngIf="!isChange">
-            {{project.name}}
+            <span class="span-name">{{project.name}}</span>
             <button class="btn-change" (click)="toggleIsChange($event)">F</button>
         </p>
         <p  *ngIf="isChange" 

@@ -44,11 +44,15 @@ export class DataService {
         return throwError(error.message || error);
     }
 
+    public isLoggedIn() {
+        return this.http.get(`${this.apiUrl}/verify`);
+    }
+
     public verify() {
         return this.http.get(`${this.apiUrl}/verify`)
             .pipe(
                 map((value) => {
-                    localStorage.setItem("logged_in", JSON.stringify(value));
+                    console.log(value);
                     return true;
                 }),
                 catchError(error => this.handleError(error)),
@@ -66,6 +70,10 @@ export class DataService {
                 map(() => true),
                 catchError(error => this.handleError(error)),
             );
+    }
+
+    public signout() {
+        return this.http.get(`${this.apiUrl}/signout`);
     }
 
     public run(projectId: number): Observable<any> {
