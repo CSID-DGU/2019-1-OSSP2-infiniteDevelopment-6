@@ -1,8 +1,6 @@
 <section (contextmenu)="openContextMenu($event)" (click)="selectProject($event); disableContextMenu($event)">
     <div class="tooltip-wrapper">
-        <button>icon</button>
-        <button>name</button>
-        <button (click)="openCreatePopup()">add project</button>
+        <a (click)="openCreatePopup()">+ add project</a>
     </div>
     <div class="directory-wrapper">
         <div class="project-container container">
