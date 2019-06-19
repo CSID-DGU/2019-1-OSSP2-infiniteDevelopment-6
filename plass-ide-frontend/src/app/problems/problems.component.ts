@@ -22,7 +22,7 @@ export class ProblemsComponent implements OnInit{
     ) {}
 
     public ngOnInit() {
-        const page = parseInt(this.route.snapshot.queryParamMap.get("page"));
+        const page = parseInt(this.route.snapshot.queryParamMap.get("page")) || 0;
 
         this.dataService.getProblems({page}).subscribe((value) => {
             this.problems = value;
@@ -43,6 +43,7 @@ export class ProblemsComponent implements OnInit{
     }
 
     public handlePagenation(page) {
+        this.router.navigateByUrl(`/problems?page=${page}`)
         this.dataService.getProblems({page}).subscribe((value) => {
             this.problems = value;
         });

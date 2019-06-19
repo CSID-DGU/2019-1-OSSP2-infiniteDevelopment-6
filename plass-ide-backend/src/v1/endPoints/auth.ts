@@ -35,7 +35,7 @@ const signout = (req: express.Request, res: express.Response) => {
 const verify = (req: express.Request, res: express.Response) => {
     res
         .status(200)
-        .end();
+        .send({...req.user.user});
 };
 
 export const authEndPoint = {

@@ -14,6 +14,7 @@ import { DataService } from '../data.service';
 
 export class MyPageComponent implements OnInit{
     isLoggedIn: string | null = null;
+    user:any = null;
 
     public constructor(
         private router: Router,
@@ -21,6 +22,14 @@ export class MyPageComponent implements OnInit{
     ) {}
     
     public ngOnInit() {
-        this.dataService.verify().subscribe(() => {});
+        this.dataService.isLoggedIn().subscribe((value: any) => {
+            this.user = value;
+            const createdDate = new Date(value.created);
+            const birthDate = new Date(value.birth);
+          
+            this.user.created = createdDate.getFullYear() + "-" + (createdDate.getUTCMonth() + 1) + "-" + createdDate.getDate();
+            this.user.birth = birthDate.getFullYear() + "-" + (birthDate.getUTCMonth() + 1) + "-" + birthDate.getDate();
+            console.log(value);
+        });
     }
 }

@@ -2,6 +2,34 @@ section {
     display: flex;  
     flex-direction: column;
     align-items: center;
+    .slogan {
+        position: relative;
+        width: 100%;
+        height: 250px;
+        max-height: 250px;
+        margin-bottom: 15px;
+        background: url('../../../assets/back.jpg');  
+        .back {
+            position: absolute;
+            top:0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background:rgba(0,0,0, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-content: center;
+            p {
+                font-size: 3rem;
+                color: white;
+                font-weight: 600;
+                text-align: center;
+            }
+        }
+    }
     article {
         min-width: 1200px;
         nav {

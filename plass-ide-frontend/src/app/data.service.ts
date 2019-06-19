@@ -52,7 +52,6 @@ export class DataService {
         return this.http.get(`${this.apiUrl}/verify`)
             .pipe(
                 map((value) => {
-                    console.log(value);
                     return true;
                 }),
                 catchError(error => this.handleError(error)),

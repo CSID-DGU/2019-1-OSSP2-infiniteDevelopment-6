@@ -1,25 +1,25 @@
 <article>
     <h1>개인 페이지</h1>
-    <div class="info-wrapper">
+    <div class="info-wrapper" *ngIf="user">
         <div class="image-wrapper">
             <img src="https://www.dongguk.edu/file/mbs/kr/images/editor/1490848602262_img.jpg"/>
         </div>
         <table class="info-table">
             <tr>
                 <td class="label-wrapper">이름</td>
-                <td>김현각</td>
+                <td>{{user.name}}</td>
                 <td class="label-wrapper">학교</td>
-                <td>동국대학교</td>
+                <td>{{user.school}}</td>
             </tr>
             <tr>
                 <td class="label-wrapper">학번</td>
-                <td>2016112187</td>
+                <td>{{user.student_id}}</td>
                 <td class="label-wrapper">학년</td>
-                <td>3</td>
+                <td>{{user.grade}}</td>
             </tr>
             <tr>
                 <td class="label-wrapper">메일</td>
-                <td>manist67@naver.com</td>
+                <td>{{user.email}}</td>
             </tr>
             <tr>
                 <td class="label-wrapper">비밀번호</td>
@@ -31,11 +31,11 @@
             <tr>
                 <td class="label-wrapper">생년월일</td>
                 <td>
-                    98.01.13
+                    {{user.birth}}
                 </td>
                 <td class="label-wrapper">가입일자</td>
                 <td>
-                    98.01.13
+                    {{user.created}}
                 </td>
             </tr>
         </table>
@@ -47,8 +47,6 @@
         <div class="tab-wrapper">
             <a class="active">시즌 1</a>
             <a>시즌 2</a>
-            <a>시즌 3</a>
-            <a>시즌 4</a>
         </div>
         <div class="rank-wrapper">
             <div class="image-wrapper">
@@ -57,20 +55,20 @@
             <div class="detail-info">
                 <h2>
                     당신의 랭킹은 상위 
-                    <span class="span-percentage">10.34%</span>
+                    <span class="span-percentage">100%</span>
                     입니다.
                 </h2>
                 <p>
-                    내가 푼 문제 수 : <span class="span-result">600</span>
+                    내가 푼 문제 수 : <span class="span-result">5</span>
                 </p>
                 <p>
-                    제출한 문제 수 : <span class="span-result">600</span>
+                    제출한 문제 수 : <span class="span-result">3</span>
                 </p>
                 <p>
-                    중도 포기한 수 : <span class="span-result">600</span>
+                    중도 포기한 수 : <span class="span-result">2</span>
                 </p>
                 <p>
-                    성공률 : <span class="span-result">85%</span>
+                    성공률 : <span class="span-result">60%</span>
                 </p>
             </div>
         </div>
@@ -80,29 +78,14 @@
     </h1>
     <div class="resolve-wrapper">
         <a>1</a>
-        <a>78</a>
-        <a>98</a>
-        <a>100</a>
-        <a>24</a>
-        <a>1064</a>
-        <a>9867</a>
-        <a>4946</a>
-        <a>10</a>
         <a>3</a>
+        <a>4</a>
     </div>
     <h1>
         해결 중인 문제
     </h1>
     <div class="resolve-wrapper">
-        <a>1</a>
-        <a>78</a>
-        <a>98</a>
-        <a>100</a>
-        <a>24</a>
-        <a>1064</a>
-        <a>9867</a>
-        <a>4946</a>
-        <a>10</a>
-        <a>3</a>
+        <a>2</a>
+        <a>12</a>
     </div>
 </article>
