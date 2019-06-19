@@ -2,7 +2,7 @@ import {
     Component,
     OnInit
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Problem } from '../types';
 import { DataService } from '../data.service';
 
@@ -17,11 +17,14 @@ export class ProblemsComponent implements OnInit{
     
     public constructor(
         private dataService: DataService,
-        private route: Router
+        private router: Router,
+        private route: ActivatedRoute
     ) {}
 
     public ngOnInit() {
-        this.dataService.getProblems({page: 0}).subscribe((value) => {
+        const page = parseInt(this.route.snapshot.queryParamMap.get("page"));
+
+        this.dataService.getProblems({page}).subscribe((value) => {
             this.problems = value;
         });
     }
@@ -36,6 +39,12 @@ export class ProblemsComponent implements OnInit{
     }
 
     public handleClickProblem(seq) {
-        this.route.navigateByUrl(`/problems/${seq}`);
+        this.router.navigateByUrl(`/problems/${seq}`);
+    }
+
+    public handlePagenation(page) {
+        this.dataService.getProblems({page}).subscribe((value) => {
+            this.problems = value;
+        });
     }
 }
