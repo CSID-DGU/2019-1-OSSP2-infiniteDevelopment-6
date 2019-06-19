@@ -28,7 +28,7 @@ const signout = (req: express.Request, res: express.Response) => {
     res
         .clearCookie("token")
         .set("location", "/")
-        .status(302)
+        .status(200)
         .end();
 };
 
