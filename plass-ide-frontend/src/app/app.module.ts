@@ -5,6 +5,8 @@ import {
     BrowserAnimationsModule,
     NoopAnimationsModule,
 } from '@angular/platform-browser/animations';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+
 import { SharedModule } from 'primeng/shared';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,6 +17,7 @@ import { MainModule } from './main/main.module';
 import { DirectoryModule } from './directory/directory.module';
 import { ProblemsModule } from './problems/problems.module';
 import { MyPageModule } from './mypage/mypage.module';
+
 
 @NgModule({
     declarations: [
@@ -36,6 +39,7 @@ import { MyPageModule } from './mypage/mypage.module';
     ],
     providers: [
         CanActivateGuard,
+        {provide: LocationStrategy, useClass: HashLocationStrategy}
     ],
     bootstrap: [
         AppComponent,

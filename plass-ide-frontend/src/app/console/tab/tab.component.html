@@ -15,7 +15,7 @@
         </ng-container>
     </div>
     <div class="editor-wrapper">
-        <div ace-editor class="editor" theme='eclipse' [(text)]="text" 
+        <div ace-editor class="editor" theme='eclipse' [(text)]="text"  [mode]="file ? file.ext : ''"
             (textChanged)="changeEditor($event)"></div>
             <div class="toolbox-wrapper">
                 <button (click)="uploadFile($event)">save</button>
