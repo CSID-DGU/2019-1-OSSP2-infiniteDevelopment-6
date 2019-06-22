@@ -19,6 +19,7 @@ export class ProblemConsoleComponent implements OnInit {
     text: string = "";
     resultConsole: string = "";
     resultHash: string = null;
+    resultSubmit: any;
 
     public constructor(
         private dataService: DataService,
@@ -94,10 +95,14 @@ export class ProblemConsoleComponent implements OnInit {
         }).subscribe(value => {
             this.resultConsole = "";
             this.dataService.submit(this.project.id).subscribe((value) => {
-                console.log(value);
+                this.resultSubmit = value;
             });
         }, error => {
             alert("잠시 후 다시 시도해주세요.");
         });
+    }
+
+    dismissResult() {
+        this.resultSubmit = null;
     }
 }
