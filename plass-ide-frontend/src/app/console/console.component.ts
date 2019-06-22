@@ -175,7 +175,7 @@ export class ConsoleComponent implements OnInit {
                 const file: File = {
                     name: body.filename,
                     data: "",
-                    isDirectory: false,
+                    isDirectory: true,
                     path: path
                 };
 
