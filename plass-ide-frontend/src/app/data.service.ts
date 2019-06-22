@@ -87,6 +87,10 @@ export class DataService {
         return this.http.get(`${this.apiUrl}/run/${hash}`);
     }
 
+    public submit(projectId: number): Observable<any> {
+        return this.http.post(`${this.apiUrl}/submit/projects/${projectId}`, {});
+    }
+
     public getProblems({page=0, unit=10}: {page: number, unit?: number}): Observable<Array<Problem>> {
         return this.http.get(`${this.apiUrl}/problems${objectSerializer({page, unit})}`)
             .pipe(

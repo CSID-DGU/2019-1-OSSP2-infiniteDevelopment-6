@@ -31,8 +31,8 @@ export class ProblemConsoleComponent implements OnInit {
 
         this.dataService.getProject({id}).subscribe((project) => {
             this.project = project;
-            
-            console.log(project.files);
+            this.mainFile = project.files.find((value) => value.name.toLowerCase().includes("main")); // find main file
+            this.text = this.mainFile.data;
         }, (error) => {
             // TODO: error exception
         });
@@ -93,32 +93,11 @@ export class ProblemConsoleComponent implements OnInit {
             path: mainFile.path + "/" + mainFile.name,
         }).subscribe(value => {
             this.resultConsole = "";
-            this.dataService.run(this.project.id).subscribe((value) => {
-                this.resultHash = value.hash;
-                this.callResult();
+            this.dataService.submit(this.project.id).subscribe((value) => {
+                console.log(value);
             });
         }, error => {
             alert("잠시 후 다시 시도해주세요.");
         });
-
-        
-        this.resultConsole = "";
-        this.dataService.run(this.project.id).subscribe((value) => {
-            this.resultHash = value.hash;
-            this.callResult();
-        });
     }
-}
-
-
-function getPath(target) {
-    let path = "";
-    if(!target) {} 
-    else if (target.isDirectory) {
-        path = target.path + "/" + target.name;
-    } else {
-        path = target.path;
-    }
-
-    return path;
 }
