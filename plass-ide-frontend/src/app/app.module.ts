@@ -17,6 +17,7 @@ import { MainModule } from './main/main.module';
 import { DirectoryModule } from './directory/directory.module';
 import { ProblemsModule } from './problems/problems.module';
 import { MyPageModule } from './mypage/mypage.module';
+import { ProblemConsoleModule } from './problemConsole/problem-console.module';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { MyPageModule } from './mypage/mypage.module';
         MainModule,
         DirectoryModule,
         ProblemsModule,
-        MyPageModule
+        MyPageModule,
+        ProblemConsoleModule
     ],
     providers: [
         CanActivateGuard,

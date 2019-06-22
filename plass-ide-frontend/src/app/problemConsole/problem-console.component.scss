@@ -1,0 +1,62 @@
+.ide-wrapper{
+  display: flex;
+  height: 100%;
+  border-top: 1px solid #303030;
+  aside-problem{
+    flex: 1;
+    border-right: 1px solid #303030;
+  }
+  section {
+    display: flex;
+    flex:1;
+    flex-direction: column;
+    .editor-wrapper {
+      display: flex;
+      flex-direction: row;
+      height: 75%;
+      border-bottom: 1px solid #303030;
+      tab-component {
+        flex: 1;
+        border-right: 1px solid #303030;
+      }
+      tab-component:last-child {
+        border-right: 0;
+      }
+    }
+    .console-wrapper {
+      display: flex;
+      flex-direction: column;
+      height: 25%;
+      .console {
+        flex: 1;
+        font-size: 18px;
+      }
+      .console-input-wrapper {
+        margin-left: 40px;
+        input[type=text] {
+          width: 100%;
+        }
+      }
+    }
+
+    .editor-wrapper{
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      .editor {
+          flex: 1;
+          height: 100%;
+          font-size: 16px; 
+          line-height: 1.3;
+      }
+      .toolbox-wrapper{
+        position: absolute;
+        z-index: 100;
+        background: white;
+        top: 0;
+        right: 0;
+      }
+    }
+  }
+}

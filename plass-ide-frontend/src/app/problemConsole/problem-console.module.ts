@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared.module';
 // import { ConsoleRoutingModule } from './console-routing.module';
-import { ConsoleComponent } from './console.component';
-import { TabComponent } from './tab/tab.component';
-import { NamePopupComponent } from './namePopup/namePopup.component';
+import { ProblemConsoleComponent } from './problem-console.component';
+import { AsideProblemComponent } from './problem/problem.component';
 
 @NgModule({
     imports: [
@@ -11,11 +10,11 @@ import { NamePopupComponent } from './namePopup/namePopup.component';
         SharedModule,
     ],
     declarations: [
-        ConsoleComponent, TabComponent, NamePopupComponent
+        ProblemConsoleComponent, AsideProblemComponent
     ],
     exports: [
-        ConsoleComponent,
+        ProblemConsoleComponent,
     ],
     providers: [],
 })
-export class ConsoleModule {}
+export class ProblemConsoleModule {}

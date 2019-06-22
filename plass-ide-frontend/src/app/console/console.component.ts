@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { DataService } from '../data.service';
 import { ActivatedRoute } from '@angular/router';
-import { Project, File, Problem } from '../types';
+import { Project, File } from '../types';
 import { TabComponent } from './tab/tab.component';
 
 
@@ -18,7 +18,6 @@ import { TabComponent } from './tab/tab.component';
 })
 export class ConsoleComponent implements OnInit {
     project: Project;
-    problem: Problem;
     text: string = "";
     resultConsole: string = "";
     resultHash: string = null;

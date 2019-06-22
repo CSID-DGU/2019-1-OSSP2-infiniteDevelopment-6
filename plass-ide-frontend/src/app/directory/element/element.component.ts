@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 })
 export class ElementComponent implements OnInit{
     @Input() project: Project;
+    @Input() isProblem:boolean = false;
     
     isChange: boolean = false;
     name: string = "";
@@ -30,7 +31,11 @@ export class ElementComponent implements OnInit{
 
     clickProject() {
         if(this.isDoubleClick) {
-            this.router.navigateByUrl(`console/${this.project.id}`);
+            if( !this.isProblem) {
+                this.router.navigateByUrl(`console/${this.project.id}`);
+            } else {
+                this.router.navigateByUrl(`console/${this.project.id}/problem`);
+            }
             return;
         }
         this.isDoubleClick = true;

@@ -25,7 +25,7 @@
             <ng-container *ngIf="projectsWithProblem">
                 <ul>
                     <list-element *ngFor="let project of projectsWithProblem" (click)="selectProject($event, project)" 
-                        [project]="project" [ngClass]="{'project-selected': project.select}" 
+                        [project]="project" [ngClass]="{'project-selected': project.select}"  [isProblem]="true"
                         (contextmenu)="openContextMenu($event, project)"></list-element>
                 </ul>
             </ng-container>
