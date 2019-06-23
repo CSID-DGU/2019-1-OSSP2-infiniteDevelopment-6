@@ -25,13 +25,13 @@
 
  
 
-### os: Linux debian
+#### os: Linux debian
 
-### IDE: visual studio code
+#### IDE: visual studio code
 
-### Database: >=Mysql5.6
+#### Database: >=Mysql5.6
 
-### NPM: >=6.9.0
+#### NPM: >=6.9.0
 
  
 
