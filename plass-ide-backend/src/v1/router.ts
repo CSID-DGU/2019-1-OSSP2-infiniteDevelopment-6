@@ -11,6 +11,8 @@ router.get("/verify", authenticate, authEndPoint.verify);
 
 router.post("/signin", authEndPoint.signin);
 
+router.post("/signup", authEndPoint.signup);
+
 router.get("/problems", problemEndPoint.getProblems);
 
 router.get("/problems/:id", problemEndPoint.getProblem);

@@ -75,6 +75,10 @@ export class DataService {
         return this.http.get(`${this.apiUrl}/signout`);
     }
 
+    public signup(userInfo: any) {
+        return this.http.post(`${this.apiUrl}/signup`, userInfo);
+    }
+
     public run(projectId: number): Observable<any> {
         return this.http.post(`${this.apiUrl}/run/projects/${projectId}`, {});
     }

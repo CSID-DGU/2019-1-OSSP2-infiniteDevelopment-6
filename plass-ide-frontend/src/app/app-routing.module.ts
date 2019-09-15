@@ -12,6 +12,7 @@ import { ProblemsComponent } from './problems/problems.component';
 import { DetailComponent } from './problems/detail/detail.component';
 import { MyPageComponent } from './mypage/mypage.component';
 import { ProblemConsoleComponent } from './problemConsole/problem-console.component';
+import { SignupComponent } from './signup/signup.component';
 
 const routes: Routes = [
     { path: '', component: MainComponent },
@@ -22,6 +23,7 @@ const routes: Routes = [
     { path: 'problems', component: ProblemsComponent},
     { path: 'problems/:id', component: DetailComponent},
     { path: 'mypage', component: MyPageComponent },
+    { path: 'signup', component: SignupComponent },
     { path: '**', redirectTo: '' },
 ];
 

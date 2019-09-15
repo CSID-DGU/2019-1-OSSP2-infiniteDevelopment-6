@@ -24,6 +24,26 @@ const signin = async (req: express.Request, res: express.Response) => {
     }
 };
 
+const signup = async (req: express.Request, res: express.Response) => {
+    const {
+        username, password, name, studentID, email, birth
+    } = req.body;
+    console.log(username);
+
+    if(username === undefined || password === undefined || name === undefined ||
+         studentID === undefined || email === undefined || birth === undefined ) { res.status(400).send({}); return;}
+
+    try {
+        await connection.execute(`INSERT INTO users (username, password, name, student_id, email, birth, grade, school) 
+        values (?, ?, ?, ?, ?, ?, ?, ?)`, [ username, password, name, studentID, email, birth, 0, "동국대학교" ]);
+
+        res.status(200).send();
+    } catch(e) {
+        console.log(e);
+        res.status(500).send();
+    }
+}
+
 const signout = (req: express.Request, res: express.Response) => {
     res
         .clearCookie("token")
@@ -42,4 +62,5 @@ export const authEndPoint = {
     signin,
     signout,
     verify,
+    signup
 };
