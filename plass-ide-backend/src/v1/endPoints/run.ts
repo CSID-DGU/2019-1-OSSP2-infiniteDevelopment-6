@@ -38,6 +38,7 @@ const run = async (req: express.Request, res: express.Response) => {
             docker = spawn("docker", ["run", "--rm", "-i", "-v", `${sourcePath}:/src`, "java-compile-run:1.0"]);
             break;
         case "c":
+        case "cpp":
             docker = spawn("docker", ["run", "--rm", "-i", "-v", `${sourcePath}:/src`, "c-compile-run:1.0"]);
             break;
     }
@@ -148,6 +149,7 @@ async function submit(req: express.Request, res: express.Response) {
             docker = spawn("docker", ["run", "--rm", "-i", "-v", `${sourcePath}:/src`, "java-build:1.0"]);
             break;
         case "c":
+        case "cpp":
             docker = spawn("docker", ["run", "--rm", "-i", "-v", `${sourcePath}:/src`, "c-build:1.0"]);
             break;
     }

@@ -10,7 +10,7 @@ import { getUserPath, getFiles } from '../../helper/path-helper';
 
 import { IFile } from "../../types";
 
-import { JAVA_PATH, C_PATH } from "../../boilerplate";
+import { JAVA_PATH, C_PATH, CPP_PATH } from "../../boilerplate";
 
 
 const getProjects = async function(req: express.Request, res: express.Response) {
@@ -51,6 +51,9 @@ const postProjects = async function(req: express.Request, res: express.Response)
                 break;
             case "c":
                 ncp.ncp(C_PATH, userpath);
+                break;
+            case "cpp":
+                ncp.ncp(CPP_PATH, userpath);
                 break;
             default:
                 break;
