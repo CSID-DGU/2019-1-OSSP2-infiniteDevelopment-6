@@ -25,9 +25,6 @@ export class AppComponent implements OnInit{
             this.isLoggedIn = false;
         });
     }
-    public signup() {
-        alert("회원가입은 관리자를 통해 문의하세요.");
-    }
 
     public signout() {
         this.dataService.signout().subscribe((value) => {
