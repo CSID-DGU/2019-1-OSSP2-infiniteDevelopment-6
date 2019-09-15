@@ -13,6 +13,12 @@ li {
     .directory-img.c {
       background-image: url(../../../assets/c-programming.png);
     }
+    .directory-img.cpp {
+      background-image: url(../../../assets/cpp.png);
+      background-size: 100px 100px;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
     .name-wrapper {
       p {
         text-align: center;
