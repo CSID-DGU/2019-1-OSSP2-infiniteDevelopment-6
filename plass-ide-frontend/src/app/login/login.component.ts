@@ -5,11 +5,13 @@ import {
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from '../data.service';
+import { AppComponent } from '../app.component';
+import { Globals } from '../globals';
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss'],
+    styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
 
@@ -21,6 +23,7 @@ export class LoginComponent implements OnInit {
     public constructor(
         private dataService: DataService,
         private router: Router,
+        private globals: Globals
     ) {}
 
     public ngOnInit() {
@@ -39,6 +42,7 @@ export class LoginComponent implements OnInit {
             .subscribe(
                 value => {
                     if (value) {
+                        this.globals.isLoggedIn();
                         localStorage.setItem("logged_in", JSON.stringify(value));
                         this.router.navigateByUrl('/directory');
                     }

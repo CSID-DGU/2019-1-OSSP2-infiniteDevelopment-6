@@ -20,6 +20,8 @@ import { MyPageModule } from './mypage/mypage.module';
 import { ProblemConsoleModule } from './problemConsole/problem-console.module';
 import { SignupModule } from './signup/signup.module';
 
+import { Globals } from './globals';
+
 
 @NgModule({
     declarations: [
@@ -43,7 +45,8 @@ import { SignupModule } from './signup/signup.module';
     ],
     providers: [
         CanActivateGuard,
-        {provide: LocationStrategy, useClass: HashLocationStrategy}
+        {provide: LocationStrategy, useClass: HashLocationStrategy},
+        Globals
     ],
     bootstrap: [
         AppComponent,
